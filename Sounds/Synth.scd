@@ -26,13 +26,13 @@ SynthDef.new(\yaw, {
 
 (
 SynthDef.new(\tone, {
-	arg freq = 440, outBus = 0, effectBus, direction = 0.5;
+	arg freq = 440, outBus = 0, effectBus, direction = 0.5, vol=1;
 	var osc1, osc2, osc3, env, out;
 	env = EnvGen.kr(Env.new([0,1,0],[0.01, 0.1], [1,-1]), LFSaw.kr(0.5));
 
-	osc1 = LFTri.ar(freq, mul:0.5);
-	osc2 = LFPar.ar(freq*2, mul:0.1);
-	osc3 = SinOsc.ar(freq*3, mul:0.05);
+	osc1 = LFTri.ar(freq, mul:0.5*vol);
+	osc2 = LFPar.ar(freq*2, mul:0.1*vol);
+	osc3 = SinOsc.ar(freq*3, mul:0.05*vol);
 
 	out = (osc1 + osc2 + osc3)*env;
 
@@ -43,6 +43,12 @@ SynthDef.new(\tone, {
 }
 ).send(s);
 )
+
+NetAddr("127.0.0.1",57120);
+
+
+
+
 
 (
 SynthDef.new(\water,{
@@ -200,9 +206,46 @@ SynthDef(\flanger, {
 
 //Water
 ~myWater = Synth.before(~myReverb, \water, [\effectBus, ~myBus, \direction, 0]);
+~tone=Synth.new(\tone,[\effectBus, ~myBus, \direction, 1]);
+
+var tone2=Synth(\tone,[\effectBus, ~myBus, \direction, 1]);
+
+OSCdef('OSCreciver',
+	{
+		arg msg;
+		x=msg[1];
+		postln(x);
+		tone2.set(\vol,x);
+
+	},
+	"/pos");
+
+);
 
 
-)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+z
