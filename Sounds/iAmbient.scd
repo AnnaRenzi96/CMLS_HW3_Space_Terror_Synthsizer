@@ -3,15 +3,17 @@ s.boot()
 // sounds
 (
 SynthDef.new(\test, {
+	// fund
 	// evaluate the function 12 times
-    var n = 12, out;
+	arg fund = 800;
+    var n = 6, out;
     out = Mix.fill(
         n,
         {
-			SinOsc.ar([67.0.rrand(2000), 67.0.rrand(2000)], 0, n.reciprocal * 0.2);
+			SinOsc.ar([fund, 67.rrand(1000)], 0, n.reciprocal * 0.1);
         }
-    )*EnvGen.kr(Env.perc(11, 6), doneAction: Done.freeSelf);
-	Out.ar(0, out);
+    )*EnvGen.kr(Env.perc(0.5, 1), doneAction: Done.freeSelf);
+	Out.ar(0, Pan2.ar(out));
 }
 ).play;
 )
@@ -22,9 +24,9 @@ SynthDef.new(\tone, {
 	var osc1, osc2, osc3, env, out;
 	env = EnvGen.kr(Env.new([0,1,0],[0.01, 0.1], [1,-1]), LFSaw.kr(0.5));
 
-	osc1 = SinOsc.ar(freq, mul:0.8);
-	osc2 = SinOsc.ar(freq*2, mul:0.1);
-	osc3 = SinOsc.ar(freq*3, mul:0.2);
+	osc1 = LFTri.ar(freq, mul:0.5);
+	osc2 = LFPar.ar(freq*2, mul:0.1);
+	osc3 = SinOsc.ar(freq*3, mul:0.05);
 
 	out = (osc1 + osc2 + osc3)*env;
 
@@ -38,13 +40,14 @@ SynthDef.new(\tone, {
 
 (
 SynthDef.new(\water,{
-	arg outBus = 0, effectBus, direction = 0.5;
+	// we want to control fund and speed
+	arg outBus = 0, effectBus, direction = 0.5, fund = 800, speed = 80;
 	var trigs, freq, osc1, osc2, osc3, out;
 
-		trigs = Dust.kr(80);
+		trigs = Dust.kr(speed);
 		freq =
 			// Generally choose from a varied base freq
-			TExpRand.kr(800, 1500, trigs)
+			TExpRand.kr(fund, fund + 700, trigs)
 			// Wobbly variation
 			+ LFNoise2.kr(20, mul: 300)
 			// General tendency for upward rise
@@ -65,6 +68,7 @@ SynthDef.new(\water,{
 
 (
 SynthDef(\organo, {
+	// freq
 	arg out= 0, pan= 0, freq= 400, amp= 0.1;
 	var amps= [1, 0.67, 1, 1.8, 2.67, 1.67];
 	var dets= [0, 1, 0, 1.7, 0, 0];    // Detune
@@ -78,12 +82,14 @@ SynthDef(\organo, {
 }).add;
 )
 
-Synth.new(\organo);
+y = Synth.new(\organo);
+y.set(\freq, 200);
+y.set(\pan, 0.5);
 
 //computer sound
 (
 SynthDef.new(\blipblop, {
-	arg period = 0;
+	arg period = 0.05, mille = 2000;
 	var change, rate, sig, carrierFreq, cfRamp, carrierLvl, clRamp,
 	modulatorRatio, mrRamp, modulatorIndex, miRamp, outputAmplitude, oaRamp;
 
@@ -96,8 +102,8 @@ SynthDef.new(\blipblop, {
 	rate = (TChoose.kr(rate, period/((0..1) + 1))/1000).reciprocal;
 	LocalOut.kr(rate);
 
-	# carrierFreq, cfRamp = TIRand.kr(0, [1000, 1], change);
-	carrierFreq = Ramp.kr( carrierFreq / 1000, (cfRamp * period) / 1000 ) * 0.6;
+	# carrierFreq, cfRamp = TIRand.kr(0, [mille, 1], change);
+	carrierFreq = Ramp.kr( carrierFreq / mille, (cfRamp * period) / mille ) * 0.6;
 
 	# carrierLvl, clRamp = TIRand.kr(0, [9000, 1], CoinGate.kr(1/3, change));
 	carrierLvl = Ramp.kr( carrierLvl, (clRamp * period) / 1000) + 100;
@@ -124,7 +130,7 @@ SynthDef.new(\blipblop, {
 	sig = sig!2 * 0.06;
 	Out.ar(0, Pan2.ar(sig, pos:0));
 }
-).add;
+).play;
 )
 
 Synth.new(\blipblop);
@@ -189,9 +195,7 @@ Flanger is like a Phaser with dynamic delay filter (allpass), but usually it has
 
 
 (
-
 SynthDef(\flanger, {
-
 	arg out=0, in=0, delay=0.1, depth=0.08, rate=0.06, fdbk=0.0, decay=0.0;
 	var input, maxdelay, maxrate, dsig, mixed, local;
 	maxdelay = 0.013;
@@ -214,7 +218,6 @@ SynthDef(\flanger, {
 	Out.ar([out, out+1], mixed);
 
 }).send(s);
-
 )
 
 b = Bus.audio(s,1);
@@ -222,10 +225,10 @@ b = Bus.audio(s,1);
 (
 r = Synth.new(\reverb, [\inBus, b]);
 e = Synth.new(\dubecho, [\inBus, b]);
-flanger = synth.new(\flanger);
 t = Synth.before(r, \tone, [\freq, 440,\effectBus, b]);
 w = Synth.before(r, \water, [\effectBus, b]);
 )
 
-
+w.set(\fund, 200);
+w.set(\speed, 20);
 
