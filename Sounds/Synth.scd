@@ -4,7 +4,8 @@ s.boot();
 // Additive synthesis with random frequencies (environmental -horror effect)
 (
 SynthDef.new(\yaw, {
-	arg outBus = 0, effectBus, vol = 0.5, fund = 800, duration = 2, pan = 1, speed = 0.5;
+	// control vol, fund, duration, pan, speed
+	arg outBus = 0, effectBus, vol = 0.1, fund = 800, duration = 2, pan = 0, speed = 0.5;
 	// evaluate the function nOsc times
     var nOsc = 6, out;
 	out = Mix.fill(
@@ -15,9 +16,9 @@ SynthDef.new(\yaw, {
     )*EnvGen.kr(Env.perc(duration / 2, duration), LFSaw.kr(speed));
 
 	// Output
-	Out.ar(outBus, Pan2.ar(vol * out*pan));
+	Out.ar(outBus, Pan2.ar(vol * out, pan));
 	// Effect
-	Out.ar(effectBus, Pan2.ar(vol * out * (1-pan)));
+	Out.ar(effectBus, Pan2.ar(vol * out, pan));
 }
 ).send(s);
 );
@@ -27,9 +28,10 @@ SynthDef.new(\yaw, {
 //s.set(\duration, 3);
 //s.set(\fund, 100);
 //s.set(\pan, 0.3);
+
 (
 SynthDef.new(\tone, {
-	arg freq = 2, note = 1, outBus = 0, effectBus, pan = 0.5, vol=1, duration = 0.5, vol1 = 0.5, vol2 = 0.3, vol3 = 0.2, speed = 0.4;
+	arg freq = 2, note = 1, outBus = 0, effectBus, pan = 0.5, vol= 0.1, duration = 0.5, vol1 = 0.5, vol2 = 0.3, vol3 = 0.2, speed = 0.4, direction = 0.5;
 	var osc1, osc2, osc3, env, out;
 	// note conversion to frequency
 	freq = freq*pow(pow(2, 1/12), note);
@@ -37,18 +39,18 @@ SynthDef.new(\tone, {
 	env = EnvGen.kr(Env.new([0, duration,0],[0.1, duration], [1,-1]), LFSaw.kr(speed));
 
 	osc1 = LFTri.ar(freq, mul:vol1*vol*pow(duration, -1));
-		osc2 = LFPar.ar(freq*2, mul:vol2*vol*pow(duration, -1));
+	osc2 = LFPar.ar(freq*2, mul:vol2*vol*pow(duration, -1));
 	osc3 = SinOsc.ar(freq*3, mul:vol3*vol*pow(duration, -1));
 
 	out = (osc1 + osc2 + osc3)*env;
 
 	// Output
-	Out.ar(outBus, out*pan);
+	Out.ar(outBus, Pan2.ar(out*direction, pan));
 	// Effect
-	Out.ar(effectBus, out*(1-pan));
+	Out.ar(effectBus, Pan2.ar(out*(1-direction)), pan);
 }
 ).send(s);
-);
+)
 
 // test sound
 s = Synth(\tone, [\effectBus, 1, \pan, 0.5, \vol, 0.1, \speed, 2]);
@@ -59,16 +61,11 @@ s = Synth(\tone, [\effectBus, 1, \pan, 0.5, \vol, 0.1, \speed, 2]);
 //s.set(\freq, 60);
 // s.free();
 
-NetAddr("127.0.0.1",57120);
-
-
-
-
 
 (
 SynthDef.new(\water,{
-	// we want to control fund and speed
-	arg outBus = 0, effectBus, direction = 0.5, fund = 800, speed = 80;
+	// we want to control vol, fund, speed, pan, direction
+	arg outBus = 0, effectBus, direction = 0.5, fund = 800, speed = 80, pan = 0, vol = 0.1;
 	var trigs, freq, osc1, osc2, osc3, out;
 
 		trigs = Dust.kr(speed);
@@ -80,30 +77,30 @@ SynthDef.new(\water,{
 			// General tendency for upward rise
 			+ EnvGen.kr(Env.perc(1).range(0,17), trigs);
 
-	osc1 = SinOsc.ar(freq, 0, 0.05);
-	osc2 = SinOsc.ar(freq/2, 0, 0.03);
-	osc3 = SinOsc.ar(freq*1.5, 0, 0.01);
-	out = osc1 + osc2 + PinkNoise.ar(mul:0.03, add: Saw.kr(0.5));
+	osc1 = SinOsc.ar(freq, 0, mul:vol);
+	osc2 = SinOsc.ar(freq/2, 0, mul:vol/2);
+	osc3 = SinOsc.ar(freq*1.5, 0, mul:vol/3);
+	out = osc1 + osc2 + PinkNoise.ar(mul:0.03);
 
 	// Output
-	Out.ar(outBus, Pan2.ar(out*direction, pos:0));
+	Out.ar(outBus, Pan2.ar(out*direction, pan));
 	// Effect
-	Out.ar(effectBus, Pan2.ar(out*(1-direction), pos:0));
+	Out.ar(effectBus, Pan2.ar(out*(1-direction), pan));
 }
 ).send(s);
 )
 
 (
-SynthDef(\organo, {
-	// freq
-	arg outBus = 0, effectBus, direction = 0.5, pan= 0, freq= 400, amp= 0.1;
-	var amps= [1, 0.67, 1, 1.8, 2.67, 1.67];
+SynthDef.new(\organo, {
+	// vol, freq, pan, direction
+	arg outBus = 0, effectBus, direction = 0.5, pan= 0, freq= 400, vol= 0.1;
+	var amps= [1, 0.5, 0.25, 0.125, 0.06, 0.03];
 	var dets= [0, 1, 0, 1.7, 0, 0];    // Detune
 	// Mix.fill(n,function) n= size of array to create, function: array filling function
 	var src= Mix.fill(6, {
 		arg i;
 		var env = EnvGen.ar(Env.asr);
-		LFTri.ar(freq*i/4 + dets[i], 0, amp*env);
+		LFTri.ar(freq*i/4 + dets[i], 0, vol*env*amps[i]);
 	});
 
 	// Output
@@ -116,7 +113,7 @@ SynthDef(\organo, {
 
 (
 SynthDef.new(\blipblop, {
-	arg outBus = 0, effectBus, direction = 0.5, period = 0.05, mille = 2000;
+	arg outBus = 0, effectBus, direction = 0.5, period = 0.05, mille = 2000, pan = 0;
 	// we control period and mille
 	var change, rate, sig, carrierFreq, cfRamp, carrierLvl, clRamp,
 	modulatorRatio, mrRamp, modulatorIndex, miRamp, outputAmplitude, oaRamp;
@@ -157,9 +154,9 @@ SynthDef.new(\blipblop, {
 	sig = (sig - OnePole.ar(sig, exp(-2pi * (100 * SampleDur.ir))));
 	sig = sig!2 * 0.06;
 
-	Out.ar(outBus, Pan2.ar(sig*direction, pos:0));
+	Out.ar(outBus, Pan2.ar(sig*direction, pos:pan));
 	// Effect
-	Out.ar(outBus, Pan2.ar(sig*(1-direction), pos:0));
+	Out.ar(outBus, Pan2.ar(sig*(1-direction), pos:pan));
 }
 ).send(s);
 )
@@ -171,11 +168,12 @@ SynthDef.new(\blipblop, {
 
 (
 SynthDef(\reverb,{
-	arg outBus = 0, flangerBus, inBus, dir = 0.5;
+	// control: delay, decay
+	arg outBus = 0, flangerBus, inBus, dir = 0.5, delay = 0.04, decay = 3;
 	var input;
 
 	input = In.ar(inBus, 1);
-	16.do({input = AllpassC.ar(in:input, maxdelaytime:0.04, delaytime:{Rand(0.001,0.04)}.dup, decaytime:3)});
+	16.do({input = AllpassC.ar(in:input, maxdelaytime:delay, delaytime:{Rand(0.001,0.04)}.dup, decaytime:decay)});
 
 	// Reverb
 	Out.ar(outBus, input*dir);
@@ -202,40 +200,89 @@ SynthDef(\flanger, {
 
 // Connecting
 
-~myBus = Bus.audio(s,1);
-
-
 
 (
+NetAddr("127.0.0.1",57120);
+
+// Bus that connects all the sounds to Reverb effect
+~myBus = Bus.audio(s,1);
 
 // direction direzione dai Synth sounds all'output senza effetti
 // dir direzione al reverb
 // 1-dir direzione dal reverb al flanger
 
-
+//Effects
 ~myReverb = Synth.new(\reverb, [\inBus, ~myBus, \dir, 1]);
-~myFlanger = Synth.new(\flanger, [\inBus, ~myBus]);
+//~myFlanger = Synth.new(\flanger, [\inBus, ~myBus]); stand-by
 
 //Yaw
-~myYaw = Synth.before(~myReverb, \yaw, [\effectBus, ~myBus, \direction, 1]);
+~yaw = Synth.before(~myReverb, \yaw, [\effectBus, ~myBus, \direction, 1]);
 
 //Water
-~myWater = Synth.before(~myReverb, \water, [\effectBus, ~myBus, \direction, 0]);
-~tone=Synth.new(\tone,[\effectBus, ~myBus, \direction, 1]);
+~water = Synth.before(~myReverb, \water, [\effectBus, ~myBus, \direction, 1]);
 
-var tone2=Synth(\tone,[\effectBus, ~myBus, \direction, 1]);
+//Tone
+~tone = Synth.before(~myReverb, \tone, [\effectBus, ~myBus, \direction, 1]);
+
+//Organo
+~organo = Synth.before(~myReverb, \organo, [\effectBus, ~myBus, \direction, 1]);
+
+//BlipBlop
+~blipblop = Synth.before(~myReverb, \blipblop, [\effectBus, ~myBus, \direction, 1]);
+
 
 OSCdef('OSCreciver',
 	{
 		arg msg;
-		x=msg[1];
-		postln(x);
-		tone2.set(\vol,x);
+		// msg 1-2 Reverb
+		rdelay = msg[1];
+		rdecay = msg[2];
+		~myReverb.set(\delay, rdelay, \decay, rdecay);
+
+		// msg 3-7 (5) Yaw
+		yvol = msg[3];
+		yfund = msg[4];
+		yspeed = msg[5];
+		ypan = msg[6];
+		ydir = msg[7];
+		~yaw.set(\vol, yvol, \fund, yfund, \speed, yspeed, \pan, ypan, \direction, ydir);
+
+		// msg 8-12 (5) Tone
+		tvol = msg[8];
+		tfreq = msg[9];
+		tspeed = msg[10];
+		tpan = msg[11];
+		tdir = msg[12];
+		~tone.set(\vol, tvol, \freq, tfreq, \speed, tspeed, \pan, tpan, \direction, tdir);
+
+		// msg 13-17 (5) Water
+		wvol = msg[13];
+		wfund = msg[14];
+		wspeed = msg[15];
+		wpan = msg[16];
+		wdir = msg[17];
+		~water.set(\vol, wvol, \fund, wfund, \speed, wspeed, \pan, wpan, \direction, wdir);
+
+		// msg 18-21 (4) Organo
+		ovol = msg[18];
+		ofreq = msg[19];
+		opan = msg[20];
+		odir = msg[21];
+		~organo.set(\vol, ovol, \freq, ofreq, \pan, opan, \direction, odir);
+
+		// msg 22-24 (3) BlipBlop
+		bperiod = msg[22];
+		bmille = msg[23];
+		bdir = msg[24];
+		~blipblop.set(\period, bperiod, \mille, bmille, \direction, bdir);
 
 	},
 	"/pos");
+)
 
-);
+
+
+)
 
 
 
