@@ -78,7 +78,7 @@ void setup(){
   
   //for the space image
   bg = loadImage("space_im_2.jpg"); 
-  surface.setSize(800, 450);
+  surface.setSize(2000, 1800);
   surface.setResizable(true);
   background(255);
   smooth();
@@ -86,13 +86,14 @@ void setup(){
   
   PFont f; //font scritte rect
   cp5=new ControlP5(this);
-  PFont font = createFont("Tahoma", 20, true); // font scritte knob
+  PFont font = createFont("Tahoma", 14, true); // font scritte knob (20 was too big)
   cp5.setFont(font);
   
   
   
   
   // WATER
+  // shift on y axis -> 120, 240, 360, 480
   
   //KNOB VOLUME 
  
@@ -121,7 +122,7 @@ void setup(){
  
  //pan
  pan_knob=cp5.addKnob("pan")
-  .setPosition(indknobx,indknoby+240)
+  .setPosition(indknobx,indknoby+360)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(-1, 1)
@@ -133,7 +134,7 @@ void setup(){
   
   //direction
   dir_knob=cp5.addKnob("direction")
-  .setPosition(indknobx,indknoby+360)
+  .setPosition(indknobx,indknoby+480)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(0, 1)
@@ -149,7 +150,7 @@ void setup(){
 //KNOB FREQ 
 
 speed_knob=cp5.addKnob("speed")
-  .setPosition(indknobx,indknoby+480)
+  .setPosition(indknobx,indknoby+240)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(50, 1000) // check
@@ -164,7 +165,7 @@ speed_knob=cp5.addKnob("speed")
 
 //speed
    period_knob_bb=cp5.addKnob("period_bb")
-  .setPosition(indknobx+300,indknoby+120)
+  .setPosition(indknobx+300,indknoby)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(0.01, 1) // check
@@ -176,7 +177,7 @@ speed_knob=cp5.addKnob("speed")
  
  
  mille_knob_bb=cp5.addKnob("mille_bb")
-  .setPosition(indknobx+300,indknoby+240)
+  .setPosition(indknobx+300,indknoby+120)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(0.01, 1) // check
@@ -188,7 +189,7 @@ speed_knob=cp5.addKnob("speed")
   
   
   dir_knob_bb=cp5.addKnob("dir_bb")
-  .setPosition(indknobx+300,indknoby+360)
+  .setPosition(indknobx+300,indknoby+240)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(0, 1)
@@ -214,7 +215,7 @@ volume_knob_yaw=cp5.addKnob("volume_yaw")
   
   //speed
    speed_knob_yaw=cp5.addKnob("speed_yaw")
-  .setPosition(indknobx+600,indknoby+120)
+  .setPosition(indknobx+600,indknoby+240)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(0.01, 1) // check
@@ -226,7 +227,7 @@ volume_knob_yaw=cp5.addKnob("volume_yaw")
  
  //pan
  pan_knob_yaw=cp5.addKnob("pan_yaw")
-  .setPosition(indknobx+600,indknoby+240)
+  .setPosition(indknobx+600,indknoby+360)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(-1, 1)
@@ -238,7 +239,7 @@ volume_knob_yaw=cp5.addKnob("volume_yaw")
   
   //direction
   dir_knob_yaw=cp5.addKnob("dir_yaw")
-  .setPosition(indknobx+600,indknoby+360)
+  .setPosition(indknobx+600,indknoby+480)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(0, 1)
@@ -254,7 +255,7 @@ volume_knob_yaw=cp5.addKnob("volume_yaw")
 //KNOB FREQ 
 
 freq_knob_yaw=cp5.addKnob("freq_yaw")
-  .setPosition(indknobx+600,indknoby+480)
+  .setPosition(indknobx+600,indknoby+120)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(50, 1000) // check
@@ -280,7 +281,7 @@ volume_knob_org=cp5.addKnob("volume_org")
   
   //dir
    dir_knob_org=cp5.addKnob("dir_org")
-  .setPosition(indknobx+900,indknoby+120)
+  .setPosition(indknobx+900,indknoby+360)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(0, 1)
@@ -307,7 +308,7 @@ volume_knob_org=cp5.addKnob("volume_org")
 //KNOB FREQ 
 
 freq_knob_org=cp5.addKnob("freq_org")
-  .setPosition(indknobx+900,indknoby+400)
+  .setPosition(indknobx+900,indknoby+120)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(50, 1000) // check
