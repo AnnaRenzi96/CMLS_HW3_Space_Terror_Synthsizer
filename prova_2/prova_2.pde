@@ -35,6 +35,7 @@ Knob volume_knob_tone;
 Knob freq_knob_tone;
 Knob speed_knob_tone;
 Knob pan_knob_tone;
+Knob dir_knob_tone;
 //REVERB
 Knob delay_knob;
 Knob decay_knob;
@@ -54,7 +55,7 @@ float volume_yaw,freq_yaw,speed_yaw, pan_yaw, dir_yaw;
 //ORGANO
 float volume_org,freq_org,speed_org,pan_org;
 //TONE
-float volume_tone,freq_tone,speed_tone,pan_tone;
+float volume_tone,freq_tone,speed_tone,pan_tone, dir_tone;
 //REVERB
 float delay,decay;
 
@@ -366,6 +367,18 @@ volume_knob_tone=cp5.addKnob("volume_tone")
   .setColorBackground(color(90,90,90))
   .setColorActive(color(303,50,82))
   .setColorCaptionLabel(color(237,218,218));
+  
+  //pan
+  dir_knob_tone=cp5.addKnob("dir_tone")
+  .setPosition(indknobx+1200,indknoby+480)
+  .setRadius(30)
+  .setSize(70, 50)
+  .setRange(0, 1)
+  .setValue(1)
+  .setColorForeground(color(237,218,218))
+  .setColorBackground(color(90,90,90))
+  .setColorActive(color(303,50,82))
+  .setColorCaptionLabel(color(237,218,218));
  
 //REVERB
 
@@ -479,7 +492,7 @@ rect(indrectx+1500,indrecty, 150,60,3, 6, 12, 18);
   myMessage.add(freq_knob_tone.getValue());
   myMessage.add(speed_knob_tone.getValue());
   myMessage.add(pan_knob_tone.getValue());
-  //myMessage.add(dir_knob_tone.getValue());
+  myMessage.add(dir_knob_tone.getValue());
   // msg 13-17 (5) Water
   myMessage.add(volume_knob.getValue());
   myMessage.add(freq_knob.getValue());

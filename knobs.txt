@@ -1,4 +1,0 @@
-Volume Range: 0.0 - 1.0
-Pan Range: -1 - 1
-Speed Range:
-Direction Range: 0 - 1
