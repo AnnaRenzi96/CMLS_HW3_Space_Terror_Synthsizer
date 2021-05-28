@@ -1,48 +1,63 @@
-s.boot()
-
+s.boot();
 // Sounds
 
-
+// Additive synthesis with random frequencies (environmental -horror effect)
 (
 SynthDef.new(\yaw, {
-	// fund
-	// evaluate the function 6 times
-	arg outBus = 0, effectBus, direction = 0.5, fund = 800;
-    var n = 6, out;
-    out = Mix.fill(
-        n,
+	arg outBus = 0, effectBus, vol = 0.5, fund = 800, duration = 2, pan = 1, speed = 0.5;
+	// evaluate the function nOsc times
+    var nOsc = 6, out;
+	out = Mix.fill(
+        nOsc,
         {
-			SinOsc.ar([fund, 67.rrand(1000)], 0, n.reciprocal * 0.1);
+			SinOsc.ar([fund, 67.rrand(1000)], 0, nOsc.reciprocal * 0.1);
         }
-    )*EnvGen.kr(Env.perc(0.5, 1), doneAction: Done.freeSelf);
+    )*EnvGen.kr(Env.perc(duration / 2, duration), LFSaw.kr(speed));
 
 	// Output
-	Out.ar(outBus, Pan2.ar(out*direction));
+	Out.ar(outBus, Pan2.ar(vol * out*pan));
 	// Effect
-	Out.ar(effectBus, Pan2.ar(out*(1-direction)));
+	Out.ar(effectBus, Pan2.ar(vol * out * (1-pan)));
 }
 ).send(s);
-)
-
+);
+// test sound
+//s = Synth(\yaw, [\effectBus, 1, \pan, 1, \duration, 1, \vol, 0.1]);
+//s.set(\speed, 0.3);
+//s.set(\duration, 3);
+//s.set(\fund, 100);
+//s.set(\pan, 0.3);
 (
 SynthDef.new(\tone, {
-	arg freq = 440, outBus = 0, effectBus, direction = 0.5, vol=1;
+	arg freq = 2, note = 1, outBus = 0, effectBus, pan = 0.5, vol=1, duration = 0.5, vol1 = 0.5, vol2 = 0.3, vol3 = 0.2, speed = 0.4;
 	var osc1, osc2, osc3, env, out;
-	env = EnvGen.kr(Env.new([0,1,0],[0.01, 0.1], [1,-1]), LFSaw.kr(0.5));
+	// note conversion to frequency
+	freq = freq*pow(pow(2, 1/12), note);
 
-	osc1 = LFTri.ar(freq, mul:0.5*vol);
-	osc2 = LFPar.ar(freq*2, mul:0.1*vol);
-	osc3 = SinOsc.ar(freq*3, mul:0.05*vol);
+	env = EnvGen.kr(Env.new([0, duration,0],[0.1, duration], [1,-1]), LFSaw.kr(speed));
+
+	osc1 = LFTri.ar(freq, mul:vol1*vol*pow(duration, -1));
+		osc2 = LFPar.ar(freq*2, mul:vol2*vol*pow(duration, -1));
+	osc3 = SinOsc.ar(freq*3, mul:vol3*vol*pow(duration, -1));
 
 	out = (osc1 + osc2 + osc3)*env;
 
 	// Output
-	Out.ar(outBus, out*direction);
+	Out.ar(outBus, out*pan);
 	// Effect
-	Out.ar(effectBus, out*(1-direction));
+	Out.ar(effectBus, out*(1-pan));
 }
 ).send(s);
-)
+);
+
+// test sound
+s = Synth(\tone, [\effectBus, 1, \pan, 0.5, \vol, 0.1, \speed, 2]);
+// s.set(\speed, 1);
+// s.set(\duration, 0.3);
+// s.set(\vol1, 3, \vol2, 2, \vol3, 1.6);
+//s.set(\note, 17);
+//s.set(\freq, 60);
+// s.free();
 
 NetAddr("127.0.0.1",57120);
 
