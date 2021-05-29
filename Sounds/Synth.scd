@@ -93,7 +93,7 @@ SynthDef.new(\water,{
 (
 SynthDef.new(\organo, {
 	// vol, freq, pan, direction, dur
-	arg outBus = 0, effectBus, direction = 0.5, pan= 0, freq= 400, vol= 1, dur = 1, t_gate = 1;
+	arg outBus = 0, effectBus, direction = 0.5, pan= 0, freq= 400, vol= 1, dur = 5, t_gate = 1;
 	var amps= [0.8, 0.75, 0.7, 0.6, 0.3, 0.25];
 	var dets= [-1, 1, 3, 1.7, 2, 0.5];    // Detune
 	// Mix.fill(n,function) n= size of array to create, function: array filling function
@@ -212,6 +212,8 @@ NetAddr("127.0.0.1",57120);
 //Organo
 ~organo = Synth.before(~myReverb, \organo, [\effectBus, ~myBus, \direction, 1]);
 
+
+
 //BlipBlop
 ~blipblop = Synth.before(~myReverb, \blipblop, [\effectBus, ~myBus, \direction, 1]);
 
@@ -219,7 +221,7 @@ NetAddr("127.0.0.1",57120);
 OSCdef('OSCreciver',
 	{
 		arg msg;
-		var rdelay, rdecay, yvol, yfund, yspeed, ypan, ydir, tvol, tfreq, tspeed, tpan, tdir, wvol, wfund, wspeed, wpan, wdir, ovol, opan, odur, odir, bperiod, bmille, bdir;
+		var rdelay, rdecay, yvol, yfund, yspeed, ypan, ydir, tvol, tfreq, tspeed, tpan, tdir, wvol, wfund, wspeed, wpan, wdir, ovol, opan, ofreq, odir, bperiod, bmille, bdir;
 		// msg 1-2 Reverb
 		rdelay = msg[1];
 		rdecay = msg[2];
@@ -251,10 +253,10 @@ OSCdef('OSCreciver',
 
 		// msg 18-21 (4) Organo
 		ovol = msg[18];
-		odur = msg[19];
+		ofreq = msg[19];
 		opan = msg[20];
 		odir = msg[21];
-		~organo.set(\vol, ovol, \dur, odur, \pan, opan, \direction, odir);
+		~organo.set(\vol, ovol, \freq, ofreq, \pan, opan, \direction, odir);
 
 		// msg 22-24 (3) BlipBlop
 		bperiod = msg[22];
@@ -267,7 +269,7 @@ OSCdef('OSCreciver',
 );
 
 
-// MIDI section
+/* MIDI section
 MIDIClient.init;
 MIDIIn.connectAll;
 
@@ -279,3 +281,5 @@ MIDIdef.noteOn(\orgOn, {
 }
 );
 )
+o.set(\t_gate,1);
+*/
