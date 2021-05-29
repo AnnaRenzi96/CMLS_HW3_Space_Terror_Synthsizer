@@ -31,7 +31,7 @@ SynthDef.new(\yaw, {
 
 (
 SynthDef.new(\tone, {
-	arg freq = 2, note = 1, outBus = 0, effectBus, pan = 0.5, vol= 0, duration = 0.5, vol1 = 0.5, vol2 = 0.3, vol3 = 0.2, speed = 0.4, direction = 0.5;
+	arg freq = 2, note = 1, outBus = 0, effectBus, pan = 0.5, vol= 1, duration = 0.5, vol1 = 0, vol2 = 0.3, vol3 = 0.2, speed = 0.4, direction = 0.5;
 	var osc1, osc2, osc3, env, out;
 	// note conversion to frequency
 	freq = freq*pow(pow(2, 1/12), note);
@@ -66,7 +66,7 @@ SynthDef.new(\tone, {
 SynthDef.new(\water,{
 	// we want to control vol, fund, speed, pan, direction
 	arg outBus = 0, effectBus, direction = 0.5, fund = 800, speed = 80, pan = 0, vol = 0;
-	var trigs, freq, osc1, osc2, osc3, out;
+	var trigs, freq, osc1, osc2, out;
 
 		trigs = Dust.kr(speed);
 		freq =
@@ -79,8 +79,7 @@ SynthDef.new(\water,{
 
 	osc1 = SinOsc.ar(freq, 0, mul:vol);
 	osc2 = SinOsc.ar(freq/2, 0, mul:vol/2);
-	osc3 = SinOsc.ar(freq*1.5, 0, mul:vol/3);
-	out = osc1 + osc2 + PinkNoise.ar(mul:0.03);
+	out = osc1 + osc2 + PinkNoise.ar(mul:vol*0.01);
 
 	// Output
 	Out.ar(outBus, Pan2.ar(out*direction, pan));
@@ -93,13 +92,13 @@ SynthDef.new(\water,{
 (
 SynthDef.new(\organo, {
 	// vol, freq, pan, direction, dur
-	arg outBus = 0, effectBus, direction = 0.5, pan= 0, freq= 400, vol= 1, dur = 5, t_gate = 1;
+	arg outBus = 0, effectBus, direction = 0.5, pan= 0, freq= 400, vol= 0, dur = 5;
 	var amps= [0.8, 0.75, 0.7, 0.6, 0.3, 0.25];
 	var dets= [-1, 1, 3, 1.7, 2, 0.5];    // Detune
 	// Mix.fill(n,function) n= size of array to create, function: array filling function
 	var src= Mix.fill(6, {
 		arg i;
-		var env = EnvGen.ar(Env.asr(dur/50, dur, dur), t_gate);
+		var env = EnvGen.ar(Env.asr(dur/50, dur, dur));
 		LFTri.ar(freq*i/4 + dets[i], 0, vol*env*amps[i]);
 	});
 
@@ -201,7 +200,7 @@ NetAddr("127.0.0.1",57120);
 //~myFlanger = Synth.new(\flanger, [\inBus, ~myBus]); stand-by
 
 //Yaw
-~yaw = Synth.before(~myReverb, \yaw, [\effectBus, ~myBus, \direction, 1]);
+~yaw = Synth.before(~myReverb, \yaw, [\effectBus, ~myBus, §\direction, 1]);
 
 //Water
 ~water = Synth.before(~myReverb, \water, [\effectBus, ~myBus, \direction, 1]);
@@ -213,9 +212,9 @@ NetAddr("127.0.0.1",57120);
 ~organo = Synth.before(~myReverb, \organo, [\effectBus, ~myBus, \direction, 1]);
 
 
-
 //BlipBlop
 ~blipblop = Synth.before(~myReverb, \blipblop, [\effectBus, ~myBus, \direction, 1]);
+~blipblop.set(\vol, 0.5);
 
 
 OSCdef('OSCreciver',
@@ -281,5 +280,4 @@ MIDIdef.noteOn(\orgOn, {
 }
 );
 )
-o.set(\t_gate,1);
 */
