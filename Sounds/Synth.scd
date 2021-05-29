@@ -169,30 +169,15 @@ SynthDef.new(\blipblop, {
 (
 SynthDef(\reverb,{
 	// control: delay, decay
-	arg outBus = 0, flangerBus, inBus, dir = 0.5, delay = 0.04, decay = 3;
+	arg outBus = 0, inBus, delay = 0.04, decay = 3;
 	var input;
 
 	input = In.ar(inBus, 1);
 	16.do({input = AllpassC.ar(in:input, maxdelaytime:delay, delaytime:{Rand(0.001,0.04)}.dup, decaytime:decay)});
 
 	// Reverb
-	Out.ar(outBus, input*dir);
-	// to Flanger
-	Out.ar(flangerBus, input*(1-dir));
+	Out.ar(outBus, input);
 
-}).send(s);
-);
-
-(
-SynthDef(\flanger, {
-	arg flangefreq=0.1, fdback=0.1, inBus;
-	var input, effect;
-
-	input=In.ar(inBus,2); //get two channels of input starting (and ending)
-	input= input+ LocalIn.ar(2); //add some feedback
-	effect= DelayN.ar(input,0.02,SinOsc.kr(flangefreq,0,0.005,0.005)); //max delay of 20msec
-	LocalOut.ar(fdback*effect);
-	Out.ar(0, effect); //adds to bus 0 where original signal is already playing
 
 }).send(s);
 );
