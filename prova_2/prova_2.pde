@@ -154,7 +154,7 @@ void setup(){
   
   //KNOB VOLUME 
  
-  volume_knob=cp5.addKnob("vol_water")
+  volume_knob=cp5.addKnob("W_volume")
   .setPosition(indknobx,indknoby)
   .setRadius(30)
   .setSize(70, 50)
@@ -168,7 +168,7 @@ void setup(){
   .setColorCaptionLabel(color_label_knob);
   
   //freq
-   freq_knob=cp5.addKnob("freq_water")
+   freq_knob=cp5.addKnob("W_Frequency")
   .setPosition(indknobx,indknoby+120)
   .setRadius(30)
   .setSize(70, 50)
@@ -181,7 +181,7 @@ void setup(){
   .setColorCaptionLabel(color_label_knob);
  
  //pan
- pan_knob=cp5.addKnob("pan_water")
+ pan_knob=cp5.addKnob("W_pan")
   .setPosition(indknobx,indknoby+360)
   .setRadius(30)
   .setSize(70, 50)
@@ -194,7 +194,7 @@ void setup(){
   .setColorCaptionLabel(color_label_knob);
   
   //direction
-  dir_knob=cp5.addKnob("weather_water")
+  dir_knob=cp5.addKnob("W_atmosphere")
   .setPosition(indknobx,indknoby+480)
   .setRadius(30)
   .setSize(70, 50)
@@ -211,7 +211,7 @@ void setup(){
   
 //speed
 
-speed_knob=cp5.addKnob("speed_water")
+speed_knob=cp5.addKnob("W_speed")
   .setPosition(indknobx,indknoby+240)
   .setRadius(30)
   .setSize(70, 50)
@@ -227,7 +227,7 @@ speed_knob=cp5.addKnob("speed_water")
 //BB
 
 //volume
- volume_knob_bb=cp5.addKnob("vol_blip")
+ volume_knob_bb=cp5.addKnob("BB_volume")
   .setPosition(indknobx+300,indknoby)
   .setRadius(30)
   .setSize(70, 50)
@@ -240,7 +240,7 @@ speed_knob=cp5.addKnob("speed_water")
   .setColorCaptionLabel(color_label_knob);
   
 //speed
-   period_knob_bb=cp5.addKnob("period_blip")
+   period_knob_bb=cp5.addKnob("BB_period")
   .setPosition(indknobx+300,indknoby+120)
   .setRadius(30)
   .setSize(70, 50)
@@ -253,7 +253,7 @@ speed_knob=cp5.addKnob("speed_water")
   .setColorCaptionLabel(color_label_knob);
  
  
- mille_knob_bb=cp5.addKnob("interf_blip")
+ mille_knob_bb=cp5.addKnob("BB_interference")
   .setPosition(indknobx+300,indknoby+240)
   .setRadius(30)
   .setSize(70, 50)
@@ -266,7 +266,7 @@ speed_knob=cp5.addKnob("speed_water")
   .setColorCaptionLabel(color_label_knob);
   
   
-  dir_knob_bb=cp5.addKnob("dir_blip")
+  dir_knob_bb=cp5.addKnob("BB_direction")
   .setPosition(indknobx+300,indknoby+360)
   .setRadius(30)
   .setSize(70, 50)
@@ -281,7 +281,7 @@ speed_knob=cp5.addKnob("speed_water")
 
 //YAW
 
-volume_knob_yaw=cp5.addKnob("vol_yaw")
+volume_knob_yaw=cp5.addKnob("Y_volume")
   .setPosition(indknobx+600,indknoby)
   .setRadius(30)
   .setSize(70, 50)
@@ -294,7 +294,7 @@ volume_knob_yaw=cp5.addKnob("vol_yaw")
   .setColorCaptionLabel(color_label_knob);
   
   //speed
-   speed_knob_yaw=cp5.addKnob("speed_yaw")
+   speed_knob_yaw=cp5.addKnob("Y_speed")
   .setPosition(indknobx+600,indknoby+240)
   .setRadius(30)
   .setSize(70, 50)
@@ -307,7 +307,7 @@ volume_knob_yaw=cp5.addKnob("vol_yaw")
   .setColorCaptionLabel(color_label_knob);
  
  //pan
- pan_knob_yaw=cp5.addKnob("pan_yaw")
+ pan_knob_yaw=cp5.addKnob("Y_pan")
   .setPosition(indknobx+600,indknoby+360)
   .setRadius(30)
   .setSize(70, 50)
@@ -320,7 +320,7 @@ volume_knob_yaw=cp5.addKnob("vol_yaw")
   .setColorCaptionLabel(color_label_knob);
   
   //direction
-  dir_knob_yaw=cp5.addKnob("dir_yaw")
+  dir_knob_yaw=cp5.addKnob("Y_direction")
   .setPosition(indknobx+600,indknoby+480)
   .setRadius(30)
   .setSize(70, 50)
@@ -337,7 +337,7 @@ volume_knob_yaw=cp5.addKnob("vol_yaw")
   
 //KNOB FREQ 
 
-freq_knob_yaw=cp5.addKnob("freq_yaw")
+freq_knob_yaw=cp5.addKnob("Y_frequency")
   .setPosition(indknobx+600,indknoby+120)
   .setRadius(30)
   .setSize(70, 50)
@@ -352,7 +352,7 @@ freq_knob_yaw=cp5.addKnob("freq_yaw")
 
 //ORGANO
 
-volume_knob_org=cp5.addKnob("vol_org")
+volume_knob_org=cp5.addKnob("O_volume")
   .setPosition(indknobx+900,indknoby)
   .setRadius(30)
   .setSize(70, 50)
@@ -365,7 +365,7 @@ volume_knob_org=cp5.addKnob("vol_org")
   .setColorCaptionLabel(color_label_knob);
   
   //dir
-   dir_knob_org=cp5.addKnob("dir_org")
+   dir_knob_org=cp5.addKnob("O_direction")
   .setPosition(indknobx+900,indknoby+360)
   .setRadius(30)
   .setSize(70, 50)
@@ -378,7 +378,7 @@ volume_knob_org=cp5.addKnob("vol_org")
   .setColorCaptionLabel(color_label_knob);
  
  //pan
- pan_knob_org=cp5.addKnob("pan_org")
+ pan_knob_org=cp5.addKnob("O_pan")
   .setPosition(indknobx+900,indknoby+240)
   .setRadius(30)
   .setSize(70, 50)
@@ -394,7 +394,7 @@ volume_knob_org=cp5.addKnob("vol_org")
   
 //duration 
 
-dur_knob_org=cp5.addKnob("dur_org")
+dur_knob_org=cp5.addKnob("O_duration")
   .setPosition(indknobx+900,indknoby+120)
   .setRadius(30)
   .setSize(70, 50)
@@ -408,7 +408,7 @@ dur_knob_org=cp5.addKnob("dur_org")
 
 
 //TONE
-volume_knob_tone=cp5.addKnob("vol_tone")
+volume_knob_tone=cp5.addKnob("T_volume")
   .setPosition(indknobx+1200,indknoby)
   .setRadius(30)
   .setSize(70, 50)
@@ -421,7 +421,7 @@ volume_knob_tone=cp5.addKnob("vol_tone")
   .setColorCaptionLabel(color_label_knob);
   
   //freq
-   freq_knob_tone=cp5.addKnob("freq_tone")
+   freq_knob_tone=cp5.addKnob("T_frequency")
   .setPosition(indknobx+1200,indknoby+120)
   .setRadius(30)
   .setSize(70, 50)
@@ -434,7 +434,7 @@ volume_knob_tone=cp5.addKnob("vol_tone")
   .setColorCaptionLabel(color_label_knob);
  
  //speed
- speed_knob_tone=cp5.addKnob("speed_tone")
+ speed_knob_tone=cp5.addKnob("T_speed")
   .setPosition(indknobx+1200,indknoby+240)
   .setRadius(30)
   .setSize(70, 50)
@@ -447,7 +447,7 @@ volume_knob_tone=cp5.addKnob("vol_tone")
   .setColorCaptionLabel(color_label_knob);
   
   //pan
-  pan_knob_tone=cp5.addKnob("pan_tone")
+  pan_knob_tone=cp5.addKnob("T_pan")
   .setPosition(indknobx+1200,indknoby+360)
   .setRadius(30)
   .setSize(70, 50)
@@ -460,7 +460,7 @@ volume_knob_tone=cp5.addKnob("vol_tone")
   .setColorCaptionLabel(color_label_knob);
   
   //dir
-  dir_knob_tone=cp5.addKnob("dir_tone")
+  dir_knob_tone=cp5.addKnob("T_direction")
   .setPosition(indknobx+1200,indknoby+480)
   .setRadius(30)
   .setSize(70, 50)
@@ -474,7 +474,7 @@ volume_knob_tone=cp5.addKnob("vol_tone")
  
 //REVERB
 
- delay_knob=cp5.addKnob("DELAY")
+ delay_knob=cp5.addKnob("R_delay")
   .setPosition(indknobx+1500,indknoby+140)
   .setRadius(30)
   .setSize(70, 50)
@@ -487,7 +487,7 @@ volume_knob_tone=cp5.addKnob("vol_tone")
   .setColorCaptionLabel(color_label_knob);
   
   
-  decay_knob=cp5.addKnob("DECAY")
+  decay_knob=cp5.addKnob("R_decay")
   .setPosition(indknobx+1500,indknoby+260)
   .setRadius(30)
   .setSize(70, 50) 
@@ -679,11 +679,11 @@ void draw() {
  
 
 void drawType( float x, float y){
-text("WATER", x,y, 95);
-text("BLIPBLOP", x+300,y, 95);
-text("YAW", x+600,y, 95);
-text("ORGANO", x+900,y, 95);
-text("TONE", x+1200,y, 95);
+text("ENVIRONMENT", x,y, 95);
+text("BLIP BLOP", x+300,y, 95);
+text("Y A W", x+600,y, 95);
+text("ORGAN", x+900,y, 95);
+text("BUILDER", x+1200,y, 95);
 text("REVERB", x+1500,y, 95);
   
 }
