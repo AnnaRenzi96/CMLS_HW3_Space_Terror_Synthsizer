@@ -154,12 +154,12 @@ void setup(){
   
   //KNOB VOLUME 
  
-  volume_knob=cp5.addKnob("volume")
+  volume_knob=cp5.addKnob("vol_water")
   .setPosition(indknobx,indknoby)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(0, 1)
-  .setValue(0.35)
+  .setValue(0.1)
   .setColorValue(color_label_knob)
   .setColorForeground(all_knob)
   .setColorBackground(color(66,62,87))
@@ -167,13 +167,13 @@ void setup(){
   
   .setColorCaptionLabel(color_label_knob);
   
-  //speed
-   freq_knob=cp5.addKnob("freq")
+  //freq
+   freq_knob=cp5.addKnob("freq_water")
   .setPosition(indknobx,indknoby+120)
   .setRadius(30)
   .setSize(70, 50)
-  .setRange(0.01, 1) // check
-  .setValue(0.35) // check
+  .setRange(50, 1000) 
+  .setValue(800) 
   .setColorValue(color_label_knob)
   .setColorForeground(all_knob)
   .setColorBackground(color(66,62,87))
@@ -181,7 +181,7 @@ void setup(){
   .setColorCaptionLabel(color_label_knob);
  
  //pan
- pan_knob=cp5.addKnob("pan")
+ pan_knob=cp5.addKnob("pan_water")
   .setPosition(indknobx,indknoby+360)
   .setRadius(30)
   .setSize(70, 50)
@@ -194,7 +194,7 @@ void setup(){
   .setColorCaptionLabel(color_label_knob);
   
   //direction
-  dir_knob=cp5.addKnob("direction")
+  dir_knob=cp5.addKnob("weather_water")
   .setPosition(indknobx,indknoby+480)
   .setRadius(30)
   .setSize(70, 50)
@@ -209,14 +209,14 @@ void setup(){
  
   
   
-//KNOB FREQ 
+//speed
 
-speed_knob=cp5.addKnob("speed")
+speed_knob=cp5.addKnob("speed_water")
   .setPosition(indknobx,indknoby+240)
   .setRadius(30)
   .setSize(70, 50)
-  .setRange(50, 1000) // check
-  .setValue(800) // check
+  .setRange(1, 100)
+  .setValue(80)
   .setColorValue(color_label_knob)
   .setColorForeground(all_knob)
   .setColorBackground(color(66,62,87))
@@ -227,12 +227,12 @@ speed_knob=cp5.addKnob("speed")
 //BB
 
 //volume
- volume_knob_bb=cp5.addKnob("volume_bb")
+ volume_knob_bb=cp5.addKnob("vol_blip")
   .setPosition(indknobx+300,indknoby)
   .setRadius(30)
   .setSize(70, 50)
-  .setRange(0.01, 1) // check
-  .setValue(0.35) // check
+  .setRange(0, 1) 
+  .setValue(0.1) 
   .setColorValue(color_label_knob)
   .setColorForeground(all_knob)
   .setColorBackground(color(66,62,87))
@@ -240,12 +240,12 @@ speed_knob=cp5.addKnob("speed")
   .setColorCaptionLabel(color_label_knob);
   
 //speed
-   period_knob_bb=cp5.addKnob("period_bb")
+   period_knob_bb=cp5.addKnob("period_blip")
   .setPosition(indknobx+300,indknoby+120)
   .setRadius(30)
   .setSize(70, 50)
-  .setRange(0.01, 1) // check
-  .setValue(0.35) // check
+  .setRange(0.01, 5) 
+  .setValue(0.05) 
   .setColorValue(color_label_knob)
   .setColorForeground(all_knob)
   .setColorBackground(color(66,62,87))
@@ -253,12 +253,12 @@ speed_knob=cp5.addKnob("speed")
   .setColorCaptionLabel(color_label_knob);
  
  
- mille_knob_bb=cp5.addKnob("mille_bb")
+ mille_knob_bb=cp5.addKnob("interf_blip")
   .setPosition(indknobx+300,indknoby+240)
   .setRadius(30)
   .setSize(70, 50)
-  .setRange(0.01, 1) // check
-  .setValue(0.35) // check
+  .setRange(1, 20000) 
+  .setValue(100)
   .setColorValue(color_label_knob)
   .setColorForeground(all_knob)
   .setColorBackground(color(66,62,87))
@@ -266,7 +266,7 @@ speed_knob=cp5.addKnob("speed")
   .setColorCaptionLabel(color_label_knob);
   
   
-  dir_knob_bb=cp5.addKnob("dir_bb")
+  dir_knob_bb=cp5.addKnob("dir_blip")
   .setPosition(indknobx+300,indknoby+360)
   .setRadius(30)
   .setSize(70, 50)
@@ -281,12 +281,12 @@ speed_knob=cp5.addKnob("speed")
 
 //YAW
 
-volume_knob_yaw=cp5.addKnob("volume_yaw")
+volume_knob_yaw=cp5.addKnob("vol_yaw")
   .setPosition(indknobx+600,indknoby)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(0, 1)
-  .setValue(0.35)
+  .setValue(0.1)
   .setColorValue(color_label_knob)
   .setColorForeground(all_knob)
   .setColorBackground(color(66,62,87))
@@ -298,8 +298,8 @@ volume_knob_yaw=cp5.addKnob("volume_yaw")
   .setPosition(indknobx+600,indknoby+240)
   .setRadius(30)
   .setSize(70, 50)
-  .setRange(0.01, 1) // check
-  .setValue(0.35) // check
+  .setRange(0.1, 10) 
+  .setValue(0.5) 
   .setColorValue(color_label_knob)
   .setColorForeground(all_knob)
   .setColorBackground(color(66,62,87))
@@ -341,8 +341,8 @@ freq_knob_yaw=cp5.addKnob("freq_yaw")
   .setPosition(indknobx+600,indknoby+120)
   .setRadius(30)
   .setSize(70, 50)
-  .setRange(50, 1000) // check
-  .setValue(400)
+  .setRange(50, 2000) 
+  .setValue(800)
   .setColorValue(color_label_knob)
   .setColorForeground(all_knob)
   .setColorBackground(color(66,62,87))
@@ -352,12 +352,12 @@ freq_knob_yaw=cp5.addKnob("freq_yaw")
 
 //ORGANO
 
-volume_knob_org=cp5.addKnob("volume_org")
+volume_knob_org=cp5.addKnob("vol_org")
   .setPosition(indknobx+900,indknoby)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(0, 1)
-  .setValue(0.35)
+  .setValue(0.1)
   .setColorValue(color_label_knob)
   .setColorForeground(all_knob)
   .setColorBackground(color(66,62,87))
@@ -398,7 +398,7 @@ freq_knob_org=cp5.addKnob("freq_org")
   .setPosition(indknobx+900,indknoby+120)
   .setRadius(30)
   .setSize(70, 50)
-  .setRange(50, 1000) // check
+  .setRange(50, 1000) 
   .setValue(400)
   .setColorValue(color_label_knob)
   .setColorForeground(all_knob)
@@ -408,12 +408,12 @@ freq_knob_org=cp5.addKnob("freq_org")
 
 
 //TONE
-volume_knob_tone=cp5.addKnob("volume_tone")
+volume_knob_tone=cp5.addKnob("vol_tone")
   .setPosition(indknobx+1200,indknoby)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(0, 1)
-  .setValue(0.35)
+  .setValue(0.1)
   .setColorValue(color_label_knob)
   .setColorForeground(all_knob)
   .setColorBackground(color(66,62,87))
@@ -425,7 +425,7 @@ volume_knob_tone=cp5.addKnob("volume_tone")
   .setPosition(indknobx+1200,indknoby+120)
   .setRadius(30)
   .setSize(70, 50)
-  .setRange(50, 1000) // check
+  .setRange(50, 1000) 
   .setValue(400)
   .setColorValue(color_label_knob)
   .setColorForeground(all_knob)
@@ -438,8 +438,8 @@ volume_knob_tone=cp5.addKnob("volume_tone")
   .setPosition(indknobx+1200,indknoby+240)
   .setRadius(30)
   .setSize(70, 50)
-  .setRange(0.01, 1) // check
-  .setValue(0.35) // check
+  .setRange(0.01, 10) 
+  .setValue(0.4)
   .setColorValue(color_label_knob)
   .setColorForeground(all_knob)
   .setColorBackground(color(66,62,87))
@@ -459,7 +459,7 @@ volume_knob_tone=cp5.addKnob("volume_tone")
   .setColorActive(color(102,8,153))
   .setColorCaptionLabel(color_label_knob);
   
-  //pan
+  //dir
   dir_knob_tone=cp5.addKnob("dir_tone")
   .setPosition(indknobx+1200,indknoby+480)
   .setRadius(30)
@@ -478,8 +478,8 @@ volume_knob_tone=cp5.addKnob("volume_tone")
   .setPosition(indknobx+1500,indknoby+140)
   .setRadius(30)
   .setSize(70, 50)
-  .setRange(0.01, 1) // check
-  .setValue(0.35) // check
+  .setRange(0.01, 10)
+  .setValue(0.1) 
  .setColorValue(color_label_knob)
   .setColorForeground(all_knob)
   .setColorBackground(color(66,62,87))
@@ -491,8 +491,8 @@ volume_knob_tone=cp5.addKnob("volume_tone")
   .setPosition(indknobx+1500,indknoby+260)
   .setRadius(30)
   .setSize(70, 50) 
-  .setRange(0.01, 1) // check
-  .setValue(0.35) // check
+  .setRange(0.1, 10)
+  .setValue(3) 
   .setColorValue(color_label_knob)
   .setColorForeground(all_knob)
   .setColorBackground(color(66,62,87))

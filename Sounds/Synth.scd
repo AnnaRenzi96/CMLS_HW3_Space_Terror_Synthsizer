@@ -4,7 +4,7 @@ s.boot();
 // Additive synthesis with random frequencies (environmental -horror effect)
 (
 SynthDef.new(\yaw, {
-	// control vol, fund, duration, pan, speed
+	// control vol, fund, pan, speed, direction
 	arg outBus = 0, effectBus, vol = 0.1, fund = 800, duration = 2, pan = 0, speed = 0.5;
 	// evaluate the function nOsc times
     var nOsc = 6, out;
@@ -90,13 +90,13 @@ SynthDef.new(\water,{
 (
 SynthDef.new(\organo, {
 	// vol, freq, pan, direction, dur
-	arg outBus = 0, effectBus, direction = 0.5, pan= 0, freq= 400, vol= 0.1, dur = 5;
-	var amps= [0.8, 0.75, 0.7, 0.6, 0.3, 0.25];
-	var dets= [-1, 1, 3, 1.7, 2, 0.5];    // Detune
+	arg outBus = 0, effectBus, direction = 0.5, pan= 0, freq= 400, vol= 1, dur = 5;
+	var amps= [1, 0.5, 0.4, 0.3, 0.2, 0.1];
+	var dets= [0, 1, 0, 1.7, 0, 0];    // Detune
 	// Mix.fill(n,function) n= size of array to create, function: array filling function
 	var src= Mix.fill(6, {
 		arg i;
-		var env = EnvGen.ar(Env.asr(dur/50, dur, dur));
+		var env = EnvGen.ar(Env.asr);
 		LFTri.ar(freq*i/4 + dets[i], 0, vol*env*amps[i]);
 	});
 
