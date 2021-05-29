@@ -93,7 +93,7 @@ SynthDef.new(\water,{
 (
 SynthDef.new(\organo, {
 	// vol, freq, pan, direction, dur
-	arg outBus = 0, effectBus, direction = 0.5, pan= 0, freq= 400, vol= 0, dur = 5, t_gate = 1;
+	arg outBus = 0, effectBus, direction = 0.5, pan= 0, freq= 400, vol= 1, dur = 1, t_gate = 1;
 	var amps= [0.8, 0.75, 0.7, 0.6, 0.3, 0.25];
 	var dets= [-1, 1, 3, 1.7, 2, 0.5];    // Detune
 	// Mix.fill(n,function) n= size of array to create, function: array filling function
@@ -254,7 +254,7 @@ OSCdef('OSCreciver',
 		odur = msg[19];
 		opan = msg[20];
 		odir = msg[21];
-		~organo.set(\vol, ovol, \freq, ofreq, \pan, opan, \direction, odir);
+		~organo.set(\vol, ovol, \dur, odur, \pan, opan, \direction, odir);
 
 		// msg 22-24 (3) BlipBlop
 		bperiod = msg[22];
@@ -273,8 +273,9 @@ MIDIIn.connectAll;
 
 (
 MIDIdef.noteOn(\orgOn, {
-	arg nn;
+	arg vel, nn;
 	[vel, nn].postln;
-	o.set(\t_gate, 1, \freq, nn.midicps);
+	~organo.set(\t_gate, 1, \freq, nn.midicps);
 }
 );
+)

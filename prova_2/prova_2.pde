@@ -536,7 +536,7 @@ void draw() {
   myMessage.add(dir_knob.getValue());
   // msg 18-21 (4) Organo
   myMessage.add(volume_knob_org.getValue());
-  myMessage.add(freq_knob_org.getValue());
+  myMessage.add(dur_knob_org.getValue());
   myMessage.add(pan_knob_org.getValue());
   myMessage.add(dir_knob_org.getValue());
   // msg 22-24 (3) BlipBlop
