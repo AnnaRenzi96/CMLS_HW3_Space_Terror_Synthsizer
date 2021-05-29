@@ -5,7 +5,7 @@ s.boot();
 (
 SynthDef.new(\yaw, {
 	// control vol, fund, duration, pan, speed
-	arg outBus = 0, effectBus, vol = 0, fund = 800, duration = 2, pan = 0, speed = 0.5;
+	arg outBus = 0, effectBus, vol = 0.1, fund = 800, duration = 2, pan = 0, speed = 0.5;
 	// evaluate the function nOsc times
     var nOsc = 6, out;
 	out = Mix.fill(
@@ -31,10 +31,8 @@ SynthDef.new(\yaw, {
 
 (
 SynthDef.new(\tone, {
-	arg freq = 2, note = 1, outBus = 0, effectBus, pan = 0.5, vol= 1, duration = 0.5, vol1 = 0, vol2 = 0.3, vol3 = 0.2, speed = 0.4, direction = 0.5;
+	arg freq = 400, outBus = 0, effectBus, pan = 0.5, vol= 0.1, duration = 0.5, vol1 = 0, vol2 = 0.3, vol3 = 0.2, speed = 0.4, direction = 0.5;
 	var osc1, osc2, osc3, env, out;
-	// note conversion to frequency
-	freq = freq*pow(pow(2, 1/12), note);
 
 	env = EnvGen.kr(Env.new([0, duration,0],[0.1, duration], [1,-1]), LFSaw.kr(speed));
 
@@ -65,7 +63,7 @@ SynthDef.new(\tone, {
 (
 SynthDef.new(\water,{
 	// we want to control vol, fund, speed, pan, direction
-	arg outBus = 0, effectBus, direction = 0.5, fund = 800, speed = 80, pan = 0, vol = 0;
+	arg outBus = 0, effectBus, direction = 1, fund = 800, speed = 80, pan = 0, vol = 0.1;
 	var trigs, freq, osc1, osc2, out;
 
 		trigs = Dust.kr(speed);
@@ -92,7 +90,7 @@ SynthDef.new(\water,{
 (
 SynthDef.new(\organo, {
 	// vol, freq, pan, direction, dur
-	arg outBus = 0, effectBus, direction = 0.5, pan= 0, freq= 400, vol= 0, dur = 5;
+	arg outBus = 0, effectBus, direction = 0.5, pan= 0, freq= 400, vol= 0.1, dur = 5;
 	var amps= [0.8, 0.75, 0.7, 0.6, 0.3, 0.25];
 	var dets= [-1, 1, 3, 1.7, 2, 0.5];    // Detune
 	// Mix.fill(n,function) n= size of array to create, function: array filling function
@@ -112,7 +110,7 @@ SynthDef.new(\organo, {
 
 (
 SynthDef.new(\blipblop, {
-	arg outBus = 0, effectBus, direction = 0.5, period = 0.05, mille = 2000, pan = 0, vol = 0;
+	arg outBus = 0, effectBus, direction = 1, period = 0.05, mille = 100, pan = 0, vol = 0.1;
 	// we control period and mille
 	var change, rate, sig, carrierFreq, cfRamp, carrierLvl, clRamp,
 	modulatorRatio, mrRamp, modulatorIndex, miRamp, outputAmplitude, oaRamp;
@@ -168,7 +166,7 @@ SynthDef.new(\blipblop, {
 (
 SynthDef(\reverb,{
 	// control: delay, decay
-	arg outBus = 0, inBus, delay = 0.04, decay = 3;
+	arg outBus = 0, inBus, delay = 0.1, decay = 3;
 	var input;
 
 	input = In.ar(inBus, 1);
@@ -204,7 +202,9 @@ NetAddr("127.0.0.1",57120);
 
 //Water
 ~water = Synth.before(~myReverb, \water, [\effectBus, ~myBus, \direction, 1]);
-~water.set(\pan, 1, \vol, 0.5);
+//~water.set(\pan, 0, \vol, 0.05, \direction, 1);
+//~water.set(\speed, 100);
+//~water.free;
 
 //Tone
 ~tone = Synth.before(~myReverb, \tone, [\effectBus, ~myBus, \direction, 1]);
@@ -216,7 +216,8 @@ NetAddr("127.0.0.1",57120);
 
 //BlipBlop
 ~blipblop = Synth.before(~myReverb, \blipblop, [\effectBus, ~myBus, \direction, 1]);
-~blipblop.set(\vol, 0.5, \pan, 0);
+//~blipblop.set(\vol, 0.5, \pan, 0);
+~blipblop.set(\mille, 20000);
 
 
 OSCdef('OSCreciver',
