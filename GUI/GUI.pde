@@ -42,7 +42,7 @@ Knob vol3_knob_tone;
 Knob delay_knob;
 Knob decay_knob;
 // Buttons
-Button water_button, bb_button, yaw_button, reverb_button, org_button, tone_button;
+Button water_button, bb_button, yaw_button, org_button, tone_button;
 
 
 
@@ -67,7 +67,7 @@ boolean bb_flag=false;
 boolean yaw_flag=false;
 boolean organo_flag=false;
 boolean tone_flag=false;
-boolean reverb_flag=false;
+
 
 
 float indrectx=60; 
@@ -141,13 +141,7 @@ void setup(){
      .setColorActive(color(102,8,153))
      .setSize(150,60); 
   
-  // Reverb
-  reverb_button = cp5.addButton("                ") // these void space need to avoid button disappear
-     .setValue(0)
-     .setPosition(indrectx+1500,indrecty)
-     .setSwitch(reverb_flag)
-     .setColorBackground(color(153,8,102))
-     .setSize(150,60) ;
+  
      
      
   // WATER
@@ -605,14 +599,7 @@ void draw() {
       tone_button.setColorBackground(color(17,13,94));
    }
    
-   //if (reverb_button.isOn()){
-     //reverb_flag=true;
-    //reverb_button.setColorBackground(color(102,8,153));
-    
-   //}else {
-   //   reverb_flag=false;
-   //   reverb_button.setColorBackground(color(17,13,94));
-   //}
+   
    
    
    
@@ -671,7 +658,7 @@ void draw() {
   myMessage.add(water_flag);
   myMessage.add(organo_flag); 
   myMessage.add(bb_flag); 
-  myMessage.add(reverb_flag);
+ 
   
   // Tone synthesis part 2
   myMessage.add(vol3_knob_tone.getValue());
