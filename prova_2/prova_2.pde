@@ -39,7 +39,8 @@ Knob dir_knob_tone;
 //REVERB
 Knob delay_knob;
 Knob decay_knob;
-
+// Buttons
+Button water_button, bb_button, yaw_button, reverb_button, org_button, tone_button;
 
 
 
@@ -74,7 +75,7 @@ void setup(){
   
   //for sc processing linking
   frameRate(125);
-  oscP5=new OscP5(this,12000);
+  oscP5=new OscP5(this, 12000);
   myRemoteLocation=new NetAddress("127.0.0.1", 57120);
   
   //for the space image
@@ -90,9 +91,43 @@ void setup(){
   PFont font = createFont("Tahoma", 14, true); // font scritte knob (20 was too big)
   cp5.setFont(font);
   
+  // Buttons 
+  // Water
+  water_button = cp5.addButton(" ")
+     .setValue(0)
+     .setPosition(indrectx,indrecty)
+     .setSize(150,60);
   
+  // Bb
+  bb_button = cp5.addButton("  ")
+     .setValue(0)
+     .setPosition(indrectx+300,indrecty)
+     .setSize(150,60);
+     
+  // Yaw
+  yaw_button = cp5.addButton("   ")
+     .setValue(0)
+     .setPosition(indrectx+600,indrecty)
+     .setSize(150,60); 
+     
+  // Organo
+  org_button = cp5.addButton("        ")
+     .setValue(0)
+     .setPosition(indrectx+900,indrecty)
+     .setSize(150,60); 
   
+  // Organo
+  tone_button = cp5.addButton("            ")
+     .setValue(0)
+     .setPosition(indrectx+1200,indrecty)
+     .setSize(150,60); 
   
+  // Reverb
+  reverb_button = cp5.addButton("                ") // these void space need to avoid button disappear
+     .setValue(0)
+     .setPosition(indrectx+1500,indrecty)
+     .setSize(150,60);   
+     
   // WATER
   // shift on y axis -> 120, 240, 360, 480
   
@@ -445,21 +480,21 @@ void draw() {
   
   //for the sound button and the text
  stroke(150); 
- fill(value[0]);
-rect(indrectx,indrecty, 150,60,3, 6, 12, 18);
+//fill(value[0]);
+//rect(indrectx,indrecty, 150,60,3, 6, 12, 18);
  
  
- fill(value[1]);
-rect(indrectx+300,indrecty, 150,60,3, 6, 12, 18);
+// fill(value[1]);
+//rect(indrectx+300,indrecty, 150,60,3, 6, 12, 18);
 
-fill(value[2]);
-rect(indrectx+600,indrecty, 150,60,3, 6, 12, 18);
-fill(value[3]);
-rect(indrectx+900,indrecty, 150,60,3, 6, 12, 18);
-fill(value[4]);
-rect(indrectx+1200,indrecty, 150,60,3, 6, 12, 18);
-fill(value[5]);
-rect(indrectx+1500,indrecty, 150,60,3, 6, 12, 18);
+//fill(value[2]);
+//rect(indrectx+600,indrecty, 150,60,3, 6, 12, 18);
+//fill(value[3]);
+//rect(indrectx+900,indrecty, 150,60,3, 6, 12, 18);
+//fill(value[4]);
+//rect(indrectx+1200,indrecty, 150,60,3, 6, 12, 18);
+//fill(value[5]);
+//rect(indrectx+1500,indrecty, 150,60,3, 6, 12, 18);
    
    
    
