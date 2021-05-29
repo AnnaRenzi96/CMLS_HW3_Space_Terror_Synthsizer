@@ -1,3 +1,5 @@
+s.quit;
+s.options.memSize = 65536;
 s.boot();
 // Sounds
 
@@ -190,11 +192,9 @@ NetAddr("127.0.0.1",57120);
 ~myBus = Bus.audio(s,1);
 
 // direction direzione dai Synth sounds all'output senza effetti
-// dir direzione al reverb
-// 1-dir direzione dal reverb al flanger
 
 //Effects
-~myReverb = Synth.new(\reverb, [\inBus, ~myBus, \dir, 1]);
+~myReverb = Synth.new(\reverb, [\inBus, ~myBus]);
 //~myFlanger = Synth.new(\flanger, [\inBus, ~myBus]); stand-by
 
 //Yaw
