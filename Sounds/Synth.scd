@@ -90,13 +90,13 @@ SynthDef.new(\water,{
 (
 SynthDef.new(\organo, {
 	// vol, freq, pan, direction, dur
-	arg outBus = 0, effectBus, direction = 0.5, pan= 0, freq= 400, vol= 1, dur = 5;
+	arg outBus = 0, effectBus, direction = 0.5, pan= 0, freq= 400, vol= 1, dur = 5, t_gate = 1;
 	var amps= [1, 0.5, 0.4, 0.3, 0.2, 0.1];
 	var dets= [0, 1, 0, 1.7, 0, 0];    // Detune
 	// Mix.fill(n,function) n= size of array to create, function: array filling function
 	var src= Mix.fill(6, {
 		arg i;
-		var env = EnvGen.ar(Env.asr);
+		var env = EnvGen.ar(Env.asr(attackTime:1, sustainLevel: dur, releaseTime: dur/2),t_gate);
 		LFTri.ar(freq*i/4 + dets[i], 0, vol*env*amps[i]);
 	});
 
@@ -217,13 +217,13 @@ NetAddr("127.0.0.1",57120);
 //BlipBlop
 ~blipblop = Synth.before(~myReverb, \blipblop, [\effectBus, ~myBus, \direction, 1]);
 //~blipblop.set(\vol, 0.5, \pan, 0);
-~blipblop.set(\mille, 20000);
+//~blipblop.set(\mille, 20000);
 
 
 OSCdef('OSCreciver',
 	{
 		arg msg;
-		var rdelay, rdecay, yvol, yfund, yspeed, ypan, ydir, tvol, tfreq, tspeed, tpan, tdir, wvol, wfund, wspeed, wpan, wdir, ovol, opan, ofreq, odir, bvol, bperiod, bmille, bdir;
+		var rdelay, rdecay, yvol, yfund, yspeed, ypan, ydir, tvol, tfreq, tspeed, tpan, tdir, wvol, wfund, wspeed, wpan, wdir, ovol, opan, odur, odir, bvol, bperiod, bmille, bdir;
 		// msg 1-2 Reverb
 		rdelay = msg[1];
 		rdecay = msg[2];
@@ -255,10 +255,10 @@ OSCdef('OSCreciver',
 
 		// msg 18-21 (4) Organo
 		ovol = msg[18];
-		ofreq = msg[19];
+		odur = msg[19];
 		opan = msg[20];
 		odir = msg[21];
-		~organo.set(\vol, ovol, \freq, ofreq, \pan, opan, \direction, odir);
+		~organo.set(\vol, ovol, \dur, odur, \pan, opan, \direction, odir);
 
 		// msg 22-25 (4) BlipBlop
 		bvol = msg[22];
@@ -272,7 +272,7 @@ OSCdef('OSCreciver',
 );
 
 
-/* MIDI section
+// MIDI section
 MIDIClient.init;
 MIDIIn.connectAll;
 
@@ -284,4 +284,4 @@ MIDIdef.noteOn(\orgOn, {
 }
 );
 )
-*/
+~organo.set(\dur, 10)

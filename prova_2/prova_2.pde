@@ -28,7 +28,7 @@ Knob pan_knob_yaw;
 Knob dir_knob_yaw;
 //ORGANO
 Knob volume_knob_org;
-Knob freq_knob_org;
+Knob dur_knob_org;
 Knob pan_knob_org;
 Knob dir_knob_org;
 //TONE
@@ -392,14 +392,14 @@ volume_knob_org=cp5.addKnob("vol_org")
   
   
   
-//KNOB FREQ 
+//duration 
 
-freq_knob_org=cp5.addKnob("freq_org")
+dur_knob_org=cp5.addKnob("dur_org")
   .setPosition(indknobx+900,indknoby+120)
   .setRadius(30)
   .setSize(70, 50)
-  .setRange(50, 1000) 
-  .setValue(400)
+  .setRange(1, 20) 
+  .setValue(5)
   .setColorValue(color_label_knob)
   .setColorForeground(all_knob)
   .setColorBackground(color(66,62,87))
@@ -643,7 +643,7 @@ void draw() {
   myMessage.add(dir_knob.getValue());
   // msg 18-21 (4) Organo
   myMessage.add(volume_knob_org.getValue());
-  myMessage.add(freq_knob_org.getValue());
+  myMessage.add(dur_knob_org.getValue());
   myMessage.add(pan_knob_org.getValue());
   myMessage.add(dir_knob_org.getValue());
   // msg 22-24 (3) BlipBlop
