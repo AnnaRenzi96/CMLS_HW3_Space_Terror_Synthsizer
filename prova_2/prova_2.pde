@@ -475,7 +475,7 @@ volume_knob_tone=cp5.addKnob("T_volume")
 //REVERB
 
  delay_knob=cp5.addKnob("R_delay")
-  .setPosition(indknobx+1500,indknoby+140)
+  .setPosition(indknobx+1500,indknoby)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(0.01, 10)
@@ -488,7 +488,7 @@ volume_knob_tone=cp5.addKnob("T_volume")
   
   
   decay_knob=cp5.addKnob("R_decay")
-  .setPosition(indknobx+1500,indknoby+260)
+  .setPosition(indknobx+1500,indknoby+120)
   .setRadius(30)
   .setSize(70, 50) 
   .setRange(0.1, 10)
@@ -646,7 +646,8 @@ void draw() {
   myMessage.add(dur_knob_org.getValue());
   myMessage.add(pan_knob_org.getValue());
   myMessage.add(dir_knob_org.getValue());
-  // msg 22-24 (3) BlipBlop
+  // msg 22-25 (3) BlipBlop
+  myMessage.add(volume_knob_bb.getValue());
   myMessage.add(period_knob_bb.getValue());
   myMessage.add(mille_knob_bb.getValue());
   myMessage.add(dir_knob_org.getValue());  
