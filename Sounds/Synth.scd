@@ -79,7 +79,7 @@ SynthDef.new(\water,{
 
 	osc1 = SinOsc.ar(freq, 0, mul:vol);
 	osc2 = SinOsc.ar(freq/2, 0, mul:vol/2);
-	out = osc1 + osc2 + PinkNoise.ar(mul:vol*0.01);
+	out = osc1 + osc2 + PinkNoise.ar(mul:vol*0.05);
 
 	// Output
 	Out.ar(outBus, Pan2.ar(out*direction, pan));
@@ -155,7 +155,7 @@ SynthDef.new(\blipblop, {
 
 	Out.ar(outBus, Pan2.ar(sig*direction * vol, pos:pan));
 	// Effect
-	Out.ar(outBus, Pan2.ar(sig*(1-direction) * vol, pos:pan));
+	Out.ar(effectBus, Pan2.ar(sig*(1-direction) * vol, pos:pan));
 }
 ).send(s);
 );
@@ -200,13 +200,15 @@ NetAddr("127.0.0.1",57120);
 //~myFlanger = Synth.new(\flanger, [\inBus, ~myBus]); stand-by
 
 //Yaw
-~yaw = Synth.before(~myReverb, \yaw, [\effectBus, ~myBus, §\direction, 1]);
+~yaw = Synth.before(~myReverb, \yaw, [\effectBus, ~myBus, \direction, 1]);
 
 //Water
 ~water = Synth.before(~myReverb, \water, [\effectBus, ~myBus, \direction, 1]);
+~water.set(\pan, 1, \vol, 0.5);
 
 //Tone
 ~tone = Synth.before(~myReverb, \tone, [\effectBus, ~myBus, \direction, 1]);
+
 
 //Organo
 ~organo = Synth.before(~myReverb, \organo, [\effectBus, ~myBus, \direction, 1]);
@@ -214,13 +216,13 @@ NetAddr("127.0.0.1",57120);
 
 //BlipBlop
 ~blipblop = Synth.before(~myReverb, \blipblop, [\effectBus, ~myBus, \direction, 1]);
-~blipblop.set(\vol, 0.5);
+~blipblop.set(\vol, 0.5, \pan, 0);
 
 
 OSCdef('OSCreciver',
 	{
 		arg msg;
-		var rdelay, rdecay, yvol, yfund, yspeed, ypan, ydir, tvol, tfreq, tspeed, tpan, tdir, wvol, wfund, wspeed, wpan, wdir, ovol, opan, ofreq, odir, bperiod, bmille, bdir;
+		var rdelay, rdecay, yvol, yfund, yspeed, ypan, ydir, tvol, tfreq, tspeed, tpan, tdir, wvol, wfund, wspeed, wpan, wdir, ovol, opan, ofreq, odir, bvol, bperiod, bmille, bdir;
 		// msg 1-2 Reverb
 		rdelay = msg[1];
 		rdecay = msg[2];
@@ -257,11 +259,12 @@ OSCdef('OSCreciver',
 		odir = msg[21];
 		~organo.set(\vol, ovol, \freq, ofreq, \pan, opan, \direction, odir);
 
-		// msg 22-24 (3) BlipBlop
-		bperiod = msg[22];
-		bmille = msg[23];
-		bdir = msg[24];
-		~blipblop.set(\period, bperiod, \mille, bmille, \direction, bdir);
+		// msg 22-25 (4) BlipBlop
+		bvol = msg[22];
+		bperiod = msg[23];
+		bmille = msg[24];
+		bdir = msg[25];
+		~blipblop.set(\vol, bvol, \period, bperiod, \mille, bmille, \direction, bdir);
 
 	},
 	"/pos");
