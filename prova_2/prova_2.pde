@@ -27,7 +27,7 @@ Knob pan_knob_yaw;
 Knob dir_knob_yaw;
 //ORGANO
 Knob volume_knob_org;
-Knob freq_knob_org;
+Knob dur_knob_org;
 Knob pan_knob_org;
 Knob dir_knob_org;
 //TONE
@@ -341,14 +341,14 @@ volume_knob_org=cp5.addKnob("volume_org")
   
   
   
-//KNOB FREQ 
+//duration
 
-freq_knob_org=cp5.addKnob("freq_org")
+dur_knob_org=cp5.addKnob("dur_org")
   .setPosition(indknobx+900,indknoby+120)
   .setRadius(30)
   .setSize(70, 50)
-  .setRange(50, 1000) // check
-  .setValue(400)
+  .setRange(0.1, 7) 
+  .setValue(1)
   .setColorForeground(color(237,218,218))
   .setColorBackground(color(90,90,90))
   .setColorActive(color(303,50,82))
