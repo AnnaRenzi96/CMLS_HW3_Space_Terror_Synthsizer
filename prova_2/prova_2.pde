@@ -16,6 +16,7 @@ Knob speed_knob;
 Knob pan_knob;
 Knob dir_knob;
 //BLIPBLOP
+Knob volume_knob_bb;
 Knob period_knob_bb;
 Knob mille_knob_bb;
 Knob dir_knob_bb;
@@ -48,7 +49,7 @@ PImage bg;
 //WATER
 float volume, freq, speed,pan,duration;
 //BB
-float period_bb;
+float period_bb,volume_bb;
 float mille_bb;
 float dir_bb;
 //YAW
@@ -60,14 +61,20 @@ float volume_tone,freq_tone,speed_tone,pan_tone, dir_tone;
 //REVERB
 float delay,decay;
 
-
+boolean water_flag=false;
+boolean bb_flag=false;
+boolean yaw_flag=false;
+boolean organo_flag=false;
+boolean tone_flag=false;
+boolean reverb_flag=false;
 
 
 float indrectx=60; 
 float indrecty=100;
 float indknobx=indrectx+30; 
 float indknoby=indrecty+100;
-
+color all_knob=color(56,5,84);
+color color_label_knob=color(220,219,255);
 
 void setup(){
   
@@ -96,37 +103,50 @@ void setup(){
   water_button = cp5.addButton(" ")
      .setValue(0)
      .setPosition(indrectx,indrecty)
+     .setSwitch(water_flag)
      .setSize(150,60);
+     
   
   // Bb
   bb_button = cp5.addButton("  ")
      .setValue(0)
      .setPosition(indrectx+300,indrecty)
+     .setSwitch(bb_flag)
+     .setColorActive(color(102,8,153))
      .setSize(150,60);
      
   // Yaw
   yaw_button = cp5.addButton("   ")
      .setValue(0)
      .setPosition(indrectx+600,indrecty)
+     .setSwitch(yaw_flag)
+     .setColorActive(color(102,8,153))
      .setSize(150,60); 
      
   // Organo
   org_button = cp5.addButton("        ")
      .setValue(0)
      .setPosition(indrectx+900,indrecty)
+     .setSwitch(organo_flag)
+     .setColorActive(color(102,8,153))
      .setSize(150,60); 
   
-  // Organo
+  // tone
   tone_button = cp5.addButton("            ")
      .setValue(0)
      .setPosition(indrectx+1200,indrecty)
+     .setSwitch(tone_flag)
+     .setColorActive(color(102,8,153))
      .setSize(150,60); 
   
   // Reverb
   reverb_button = cp5.addButton("                ") // these void space need to avoid button disappear
      .setValue(0)
      .setPosition(indrectx+1500,indrecty)
-     .setSize(150,60);   
+     .setSwitch(reverb_flag)
+     .setColorActive(color(102,8,153))
+     .setSize(150,60) ;
+     
      
   // WATER
   // shift on y axis -> 120, 240, 360, 480
@@ -139,10 +159,12 @@ void setup(){
   .setSize(70, 50)
   .setRange(0, 1)
   .setValue(0.35)
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  
+  .setColorCaptionLabel(color_label_knob);
   
   //speed
    freq_knob=cp5.addKnob("freq")
@@ -151,10 +173,11 @@ void setup(){
   .setSize(70, 50)
   .setRange(0.01, 1) // check
   .setValue(0.35) // check
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
  
  //pan
  pan_knob=cp5.addKnob("pan")
@@ -163,10 +186,11 @@ void setup(){
   .setSize(70, 50)
   .setRange(-1, 1)
   .setValue(0)
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
   
   //direction
   dir_knob=cp5.addKnob("direction")
@@ -175,10 +199,11 @@ void setup(){
   .setSize(70, 50)
   .setRange(0, 1)
   .setValue(1)
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
  
  
   
@@ -191,49 +216,66 @@ speed_knob=cp5.addKnob("speed")
   .setSize(70, 50)
   .setRange(50, 1000) // check
   .setValue(800) // check
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
  
 
 //BB
 
-//speed
-   period_knob_bb=cp5.addKnob("period_bb")
+//volume
+ volume_knob_bb=cp5.addKnob("volume_bb")
   .setPosition(indknobx+300,indknoby)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(0.01, 1) // check
   .setValue(0.35) // check
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
- 
- 
- mille_knob_bb=cp5.addKnob("mille_bb")
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
+  
+//speed
+   period_knob_bb=cp5.addKnob("period_bb")
   .setPosition(indknobx+300,indknoby+120)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(0.01, 1) // check
   .setValue(0.35) // check
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
+ 
+ 
+ mille_knob_bb=cp5.addKnob("mille_bb")
+  .setPosition(indknobx+300,indknoby+240)
+  .setRadius(30)
+  .setSize(70, 50)
+  .setRange(0.01, 1) // check
+  .setValue(0.35) // check
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
   
   
   dir_knob_bb=cp5.addKnob("dir_bb")
-  .setPosition(indknobx+300,indknoby+240)
+  .setPosition(indknobx+300,indknoby+360)
   .setRadius(30)
   .setSize(70, 50)
   .setRange(0, 1)
   .setValue(1)
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
 
 
 //YAW
@@ -244,10 +286,11 @@ volume_knob_yaw=cp5.addKnob("volume_yaw")
   .setSize(70, 50)
   .setRange(0, 1)
   .setValue(0.35)
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
   
   //speed
    speed_knob_yaw=cp5.addKnob("speed_yaw")
@@ -256,10 +299,11 @@ volume_knob_yaw=cp5.addKnob("volume_yaw")
   .setSize(70, 50)
   .setRange(0.01, 1) // check
   .setValue(0.35) // check
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
  
  //pan
  pan_knob_yaw=cp5.addKnob("pan_yaw")
@@ -268,10 +312,11 @@ volume_knob_yaw=cp5.addKnob("volume_yaw")
   .setSize(70, 50)
   .setRange(-1, 1)
   .setValue(0)
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
   
   //direction
   dir_knob_yaw=cp5.addKnob("dir_yaw")
@@ -280,10 +325,11 @@ volume_knob_yaw=cp5.addKnob("volume_yaw")
   .setSize(70, 50)
   .setRange(0, 1)
   .setValue(1)
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
  
  
   
@@ -296,10 +342,11 @@ freq_knob_yaw=cp5.addKnob("freq_yaw")
   .setSize(70, 50)
   .setRange(50, 1000) // check
   .setValue(400)
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
  
 
 //ORGANO
@@ -310,10 +357,11 @@ volume_knob_org=cp5.addKnob("volume_org")
   .setSize(70, 50)
   .setRange(0, 1)
   .setValue(0.35)
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
   
   //dir
    dir_knob_org=cp5.addKnob("dir_org")
@@ -322,10 +370,11 @@ volume_knob_org=cp5.addKnob("volume_org")
   .setSize(70, 50)
   .setRange(0, 1)
   .setValue(1)
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
  
  //pan
  pan_knob_org=cp5.addKnob("pan_org")
@@ -334,25 +383,27 @@ volume_knob_org=cp5.addKnob("volume_org")
   .setSize(70, 50)
   .setRange(-1, 1)
   .setValue(0)
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
   
   
   
-//freq
+//KNOB FREQ 
 
 freq_knob_org=cp5.addKnob("freq_org")
   .setPosition(indknobx+900,indknoby+120)
   .setRadius(30)
   .setSize(70, 50)
-  .setRange(50, 1000) 
+  .setRange(50, 1000) // check
   .setValue(400)
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
 
 
 //TONE
@@ -362,10 +413,11 @@ volume_knob_tone=cp5.addKnob("volume_tone")
   .setSize(70, 50)
   .setRange(0, 1)
   .setValue(0.35)
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
   
   //freq
    freq_knob_tone=cp5.addKnob("freq_tone")
@@ -374,10 +426,11 @@ volume_knob_tone=cp5.addKnob("volume_tone")
   .setSize(70, 50)
   .setRange(50, 1000) // check
   .setValue(400)
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
  
  //speed
  speed_knob_tone=cp5.addKnob("speed_tone")
@@ -386,10 +439,11 @@ volume_knob_tone=cp5.addKnob("volume_tone")
   .setSize(70, 50)
   .setRange(0.01, 1) // check
   .setValue(0.35) // check
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
   
   //pan
   pan_knob_tone=cp5.addKnob("pan_tone")
@@ -398,10 +452,11 @@ volume_knob_tone=cp5.addKnob("volume_tone")
   .setSize(70, 50)
   .setRange(-1, 1)
   .setValue(0)
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
   
   //pan
   dir_knob_tone=cp5.addKnob("dir_tone")
@@ -410,10 +465,11 @@ volume_knob_tone=cp5.addKnob("volume_tone")
   .setSize(70, 50)
   .setRange(0, 1)
   .setValue(1)
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
  
 //REVERB
 
@@ -423,10 +479,11 @@ volume_knob_tone=cp5.addKnob("volume_tone")
   .setSize(70, 50)
   .setRange(0.01, 1) // check
   .setValue(0.35) // check
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+ .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
   
   
   decay_knob=cp5.addKnob("DECAY")
@@ -435,18 +492,19 @@ volume_knob_tone=cp5.addKnob("volume_tone")
   .setSize(70, 50) 
   .setRange(0.01, 1) // check
   .setValue(0.35) // check
-  .setColorForeground(color(237,218,218))
-  .setColorBackground(color(90,90,90))
-  .setColorActive(color(303,50,82))
-  .setColorCaptionLabel(color(237,218,218));
+  .setColorValue(color_label_knob)
+  .setColorForeground(all_knob)
+  .setColorBackground(color(66,62,87))
+  .setColorActive(color(102,8,153))
+  .setColorCaptionLabel(color_label_knob);
 
 
 
     size(640, 360);
-  er1 = new EggRing(width*1, height*1);
-  er2 = new EggRing(width*0.65, height*0.8);
-  er3 = new EggRing(width*1.2, height*0.2);
-  er4 = new EggRing(width*1.5, height*1.5);
+  er1 = new EggRing(width*0.1, height*0.1);
+  er2 = new EggRing(width*0.4, height*0.4);
+  er3 = new EggRing(width*0.7, height*0.3);
+  er4 = new EggRing(width*0.5, height*0.65);
    
   
 
@@ -458,18 +516,12 @@ volume_knob_tone=cp5.addKnob("volume_tone")
   
   
   
-  value[0]=150;
-  value[1]=150;
-  value[2]=150;
-  value[3]=150;
-  value[4]=150;
-  value[5]=150;
+ 
 }
 // end of setup
 
 
-int[] value = new int[6]; 
-int press;
+
 
 void draw() {
   
@@ -478,26 +530,79 @@ void draw() {
   //Set background image
   image(bg, 0, 0);
   
-  //for the sound button and the text
- stroke(150); 
-//fill(value[0]);
-//rect(indrectx,indrecty, 150,60,3, 6, 12, 18);
+  if (water_button.isPressed()){
+    water_flag=!water_flag;
+   }
+   
+   
+   if(water_flag==true){
+      water_button.setColorBackground(color(102,8,153));
+   } else {
+      water_button.setColorBackground(color(17,13,94));
+   }
+   
+   
+   if (bb_button.isPressed()){
+    bb_flag=!bb_flag;
+   }
+   
+   
+   if(bb_flag==true){
+      bb_button.setColorBackground(color(102,8,153));
+   } else {
+      bb_button.setColorBackground(color(17,13,94));
+   }
+   
+   
+   if (yaw_button.isPressed()){
+    yaw_flag=!yaw_flag;
+   }
+   
+   
+   if(yaw_flag==true){
+      yaw_button.setColorBackground(color(102,8,153));
+   } else {
+      yaw_button.setColorBackground(color(17,13,94));
+   }
+   
+   
+   if (org_button.isPressed()){
+    organo_flag=!organo_flag;
+   }
+   
+   
+   if(organo_flag==true){
+      org_button.setColorBackground(color(102,8,153));
+   } else {
+      org_button.setColorBackground(color(17,13,94));
+   }
+   
+   
+   if (tone_button.isPressed()){
+    tone_flag=!tone_flag;
+   }
+   
+   
+   if(tone_flag==true){
+      tone_button.setColorBackground(color(102,8,153));
+   } else {
+      tone_button.setColorBackground(color(17,13,94));
+   }
+   
+   if (reverb_button.isPressed()){
+    reverb_flag=!reverb_flag;
+   }
+   
+   
+   if(reverb_flag==true){
+      reverb_button.setColorBackground(color(102,8,153));
+   } else {
+      reverb_button.setColorBackground(color(17,13,94));
+   }
+   
+   
+   
  
- 
-// fill(value[1]);
-//rect(indrectx+300,indrecty, 150,60,3, 6, 12, 18);
-
-//fill(value[2]);
-//rect(indrectx+600,indrecty, 150,60,3, 6, 12, 18);
-//fill(value[3]);
-//rect(indrectx+900,indrecty, 150,60,3, 6, 12, 18);
-//fill(value[4]);
-//rect(indrectx+1200,indrecty, 150,60,3, 6, 12, 18);
-//fill(value[5]);
-//rect(indrectx+1500,indrecty, 150,60,3, 6, 12, 18);
-   
-   
-   
    textAlign(CENTER);
   drawType(130,80);
   
@@ -513,6 +618,7 @@ void draw() {
 
  
   OscMessage myMessage = new OscMessage("/pos");
+  
   // msg 1-2 Reverb 
   myMessage.add(delay_knob.getValue());
   myMessage.add(decay_knob.getValue());
@@ -543,24 +649,29 @@ void draw() {
   myMessage.add(period_knob_bb.getValue());
   myMessage.add(mille_knob_bb.getValue());
   myMessage.add(dir_knob_org.getValue());  
+  // BUTTONS
+  myMessage.add(water_flag); 
+  println(water_flag);
+  
+   myMessage.add(bb_flag); 
+  println(bb_flag);
+   myMessage.add(yaw_flag); 
+  println(yaw_flag);
+  
+   myMessage.add(tone_flag); 
+  println(tone_flag);
+   myMessage.add(organo_flag); 
+  println(organo_flag);
+   myMessage.add(reverb_flag); 
+  println(reverb_flag);
   
   oscP5.send(myMessage,myRemoteLocation);
   
 }
 // end of draw
   
- void mousePressed() {
-   for(int i=0; i<=5;i++){
-  if (value[i] == 150 ) {
-    press=1;
-    value[i]=color( 303,50,82);
-    
-  } else {
-    press=0;
-   value[i]=150;
-  }
-   }
- }
+
+ 
   
    
 
@@ -573,7 +684,7 @@ text("YAW", x+600,y, 95);
 text("ORGANO", x+900,y, 95);
 text("TONE", x+1200,y, 95);
 text("REVERB", x+1500,y, 95);
-  fill(51);
+  
 }
  
   EggRing er1, er2,er3,er4;
@@ -622,7 +733,7 @@ class Ring {
   
   void grow() {
     if (on == true) {
-      diameter += 0.5;
+      diameter += 0.7;
       if (diameter > width*2) {
         diameter = 0.0;
       }
@@ -632,8 +743,8 @@ class Ring {
   void display() {
     if (on == true) {
       noFill();
-      strokeWeight(4);
-      stroke(155, 153);
+      strokeWeight(3);
+      stroke(110,148,150);
       ellipse(x, y, diameter, diameter);
     }
   }
