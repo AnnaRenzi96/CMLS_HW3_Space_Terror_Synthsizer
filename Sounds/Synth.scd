@@ -5,7 +5,7 @@ s.boot();
 (
 SynthDef.new(\yaw, {
 	// control vol, fund, duration, pan, speed
-	arg outBus = 0, effectBus, vol = 0.1, fund = 800, duration = 2, pan = 0, speed = 0.5;
+	arg outBus = 0, effectBus, vol = 0, fund = 800, duration = 2, pan = 0, speed = 0.5;
 	// evaluate the function nOsc times
     var nOsc = 6, out;
 	out = Mix.fill(
@@ -31,7 +31,7 @@ SynthDef.new(\yaw, {
 
 (
 SynthDef.new(\tone, {
-	arg freq = 2, note = 1, outBus = 0, effectBus, pan = 0.5, vol= 0.1, duration = 0.5, vol1 = 0.5, vol2 = 0.3, vol3 = 0.2, speed = 0.4, direction = 0.5;
+	arg freq = 2, note = 1, outBus = 0, effectBus, pan = 0.5, vol= 0, duration = 0.5, vol1 = 0.5, vol2 = 0.3, vol3 = 0.2, speed = 0.4, direction = 0.5;
 	var osc1, osc2, osc3, env, out;
 	// note conversion to frequency
 	freq = freq*pow(pow(2, 1/12), note);
@@ -50,10 +50,10 @@ SynthDef.new(\tone, {
 	Out.ar(effectBus, Pan2.ar(out*(1-direction)), pan);
 }
 ).send(s);
-)
+);
 
 // test sound
-s = Synth(\tone, [\effectBus, 1, \pan, 0.5, \vol, 0.1, \speed, 2]);
+//s = Synth(\tone, [\effectBus, 1, \pan, 0.5, \vol, 0.1, \speed, 2]);
 // s.set(\speed, 1);
 // s.set(\duration, 0.3);
 // s.set(\vol1, 3, \vol2, 2, \vol3, 1.6);
@@ -65,7 +65,7 @@ s = Synth(\tone, [\effectBus, 1, \pan, 0.5, \vol, 0.1, \speed, 2]);
 (
 SynthDef.new(\water,{
 	// we want to control vol, fund, speed, pan, direction
-	arg outBus = 0, effectBus, direction = 0.5, fund = 800, speed = 80, pan = 0, vol = 0.1;
+	arg outBus = 0, effectBus, direction = 0.5, fund = 800, speed = 80, pan = 0, vol = 0;
 	var trigs, freq, osc1, osc2, osc3, out;
 
 		trigs = Dust.kr(speed);
@@ -88,12 +88,12 @@ SynthDef.new(\water,{
 	Out.ar(effectBus, Pan2.ar(out*(1-direction), pan));
 }
 ).send(s);
-)
+);
 
 (
 SynthDef.new(\organo, {
 	// vol, freq, pan, direction
-	arg outBus = 0, effectBus, direction = 0.5, pan= 0, freq= 400, vol= 0.1;
+	arg outBus = 0, effectBus, direction = 0.5, pan= 0, freq= 400, vol= 0;
 	var amps= [1, 0.5, 0.25, 0.125, 0.06, 0.03];
 	var dets= [0, 1, 0, 1.7, 0, 0];    // Detune
 	// Mix.fill(n,function) n= size of array to create, function: array filling function
@@ -109,11 +109,11 @@ SynthDef.new(\organo, {
 	Out.ar(effectBus, Pan2.ar(src*(1-direction), pan));
 
 }).send(s);
-)
+);
 
 (
 SynthDef.new(\blipblop, {
-	arg outBus = 0, effectBus, direction = 0.5, period = 0.05, mille = 2000, pan = 0;
+	arg outBus = 0, effectBus, direction = 0.5, period = 0.05, mille = 2000, pan = 0, vol = 0;
 	// we control period and mille
 	var change, rate, sig, carrierFreq, cfRamp, carrierLvl, clRamp,
 	modulatorRatio, mrRamp, modulatorIndex, miRamp, outputAmplitude, oaRamp;
@@ -154,12 +154,12 @@ SynthDef.new(\blipblop, {
 	sig = (sig - OnePole.ar(sig, exp(-2pi * (100 * SampleDur.ir))));
 	sig = sig!2 * 0.06;
 
-	Out.ar(outBus, Pan2.ar(sig*direction, pos:pan));
+	Out.ar(outBus, Pan2.ar(sig*direction * vol, pos:pan));
 	// Effect
-	Out.ar(outBus, Pan2.ar(sig*(1-direction), pos:pan));
+	Out.ar(outBus, Pan2.ar(sig*(1-direction) * vol, pos:pan));
 }
 ).send(s);
-)
+);
 
 
 //
@@ -181,7 +181,7 @@ SynthDef(\reverb,{
 	Out.ar(flangerBus, input*(1-dir));
 
 }).send(s);
-)
+);
 
 (
 SynthDef(\flanger, {
@@ -195,7 +195,7 @@ SynthDef(\flanger, {
 	Out.ar(0, effect); //adds to bus 0 where original signal is already playing
 
 }).send(s);
-)
+);
 
 
 // Connecting
@@ -234,6 +234,7 @@ NetAddr("127.0.0.1",57120);
 OSCdef('OSCreciver',
 	{
 		arg msg;
+		var rdelay, rdecay, yvol, yfund, yspeed, ypan, ydir, tvol, tfreq, tspeed, tpan, tdir, wvol, wfund, wspeed, wpan, wdir, ovol, ofreq, opan, odir, bperiod, bmille, bdir;
 		// msg 1-2 Reverb
 		rdelay = msg[1];
 		rdecay = msg[2];
@@ -278,36 +279,4 @@ OSCdef('OSCreciver',
 
 	},
 	"/pos");
-)
-
-
-
-)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-z
+);
