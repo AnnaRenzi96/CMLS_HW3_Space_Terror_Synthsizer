@@ -4,7 +4,7 @@ Have you ever felt the anxiety of being alone in an abandoned starship?
 What would you hear if an undefined presence invaded your station? 
 This were some of the vibes that we wanted to recreate with this Project.
 
-Homework 3 - Computer Music, Languages and Synthesis - Politecnico di Milano
+
 # Initial assignment
  - Create an instrument based on additive synthesis and an interface to control it.
  - implement a user interface where it is possible to control the synthesis parameters
@@ -17,3 +17,4 @@ sequencing technique with SuperCollider.
 
 ## Authors
 Annafelicia Renzi, Riccardo Kubler, Francesco Zumerle
+### Homework 3 - Computer Music, Languages and Synthesis - Politecnico di Milano
