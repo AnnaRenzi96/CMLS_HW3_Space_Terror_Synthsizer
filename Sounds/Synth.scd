@@ -5,7 +5,7 @@ s.boot();
 (
 SynthDef.new(\yaw, {
 	// control vol, fund, pan, speed, direction
-	arg outBus = 0, effectBus, vol = 0.1, fund = 800, duration = 2, pan = 0, speed = 0.5;
+	arg outBus = 0, effectBus, vol = 0.1, fund = 800, duration = 2, pan = 0, speed = 0.5, direction = 1;
 	// evaluate the function nOsc times
     var nOsc = 6, out;
 	out = Mix.fill(
@@ -16,9 +16,9 @@ SynthDef.new(\yaw, {
     )*EnvGen.kr(Env.perc(duration / 2, duration), LFSaw.kr(speed));
 
 	// Output
-	Out.ar(outBus, Pan2.ar(vol * out, pan));
+	Out.ar(outBus, Pan2.ar(vol * out * direction, pan));
 	// Effect
-	Out.ar(effectBus, Pan2.ar(vol * out, pan));
+	Out.ar(effectBus, Pan2.ar(vol * out * (1 -direction), pan));
 }
 ).send(s);
 );
@@ -31,7 +31,7 @@ SynthDef.new(\yaw, {
 
 (
 SynthDef.new(\tone, {
-	arg freq = 400, outBus = 0, effectBus, pan = 0.5, vol= 0.1, duration = 0.5, vol1 = 0, vol2 = 0.3, vol3 = 0.2, speed = 0.4, direction = 0.5;
+	arg freq = 400, outBus = 0, effectBus, pan = 0, vol= 0.1, duration = 0.5, vol1 = 0.5, vol2 = 0.3, vol3 = 0.2, speed = 0.4, direction = 1;
 	var osc1, osc2, osc3, env, out;
 
 	env = EnvGen.kr(Env.new([0, duration,0],[0.1, duration], [1,-1]), LFSaw.kr(speed));
@@ -166,11 +166,11 @@ SynthDef.new(\blipblop, {
 (
 SynthDef(\reverb,{
 	// control: delay, decay
-	arg outBus = 0, inBus, delay = 0.1, decay = 3;
+	arg outBus = 0, inBus, delay = 0.04, decay = 3;
 	var input;
 
 	input = In.ar(inBus, 1);
-	16.do({input = AllpassC.ar(in:input, maxdelaytime:delay, delaytime:{Rand(0.001,0.04)}.dup, decaytime:decay)});
+	16.do({input = AllpassC.ar(in:input, maxdelaytime:2, delaytime:{Rand(0.001,delay)}.dup, decaytime:decay)});
 
 	// Reverb
 	Out.ar(outBus, input);
@@ -211,7 +211,7 @@ NetAddr("127.0.0.1",57120);
 
 
 //Organo
-~organo = Synth.before(~myReverb, \organo, [\effectBus, ~myBus, \direction, 1]);
+~organo = Synth.before(~myReverb, \organo, [\effectBus, ~myBus, \direction, 1, \t_gate, 1]);
 
 
 //BlipBlop
@@ -223,14 +223,14 @@ NetAddr("127.0.0.1",57120);
 OSCdef('OSCreciver',
 	{
 		arg msg;
-		var rdelay, rdecay, yvol, yfund, yspeed, ypan, ydir, tvol, tfreq, tspeed, tpan, tdir, wvol, wfund, wspeed, wpan, wdir, ovol, opan, odur, odir, bvol, bperiod, bmille, bdir;
+		var rdelay, rdecay, yvol, yfund, yspeed, ypan, ydir, tvol, tfreq, tspeed, tpan, tdir, tvol1, tvol2, tvol3, wvol, wfund, wspeed, wpan, wdir, ovol, opan, odur, odir, bvol, bperiod, bmille, bdir;
 		// msg 1-2 Reverb
 		rdelay = msg[1];
 		rdecay = msg[2];
 		~myReverb.set(\delay, rdelay, \decay, rdecay);
 
 		// msg 3-7 (5) Yaw
-		yvol = msg[3];
+		if(msg[26], {yvol = msg[3]}, {yvol = 0});
 		yfund = msg[4];
 		yspeed = msg[5];
 		ypan = msg[6];
@@ -238,15 +238,16 @@ OSCdef('OSCreciver',
 		~yaw.set(\vol, yvol, \fund, yfund, \speed, yspeed, \pan, ypan, \direction, ydir);
 
 		// msg 8-12 (5) Tone
-		tvol = msg[8];
+		if(msg[27], {tvol = msg[8]}, {tvol = 0});
 		tfreq = msg[9];
 		tspeed = msg[10];
-		tpan = msg[11];
-		tdir = msg[12];
-		~tone.set(\vol, tvol, \freq, tfreq, \speed, tspeed, \pan, tpan, \direction, tdir);
+		tvol1 = msg[11];
+		tvol2 = msg[12];
+		tvol3 = msg[32];
+		~tone.set(\vol, tvol, \freq, tfreq, \speed, tspeed, \vol1, tvol1, \vol2, tvol2, \vol3, tvol3);
 
 		// msg 13-17 (5) Water
-		wvol = msg[13];
+		if(msg[28], {wvol = msg[13]}, {wvol = 0});
 		wfund = msg[14];
 		wspeed = msg[15];
 		wpan = msg[16];
@@ -254,25 +255,26 @@ OSCdef('OSCreciver',
 		~water.set(\vol, wvol, \fund, wfund, \speed, wspeed, \pan, wpan, \direction, wdir);
 
 		// msg 18-21 (4) Organo
-		ovol = msg[18];
+		if(msg[29], {ovol = msg[18]}, {ovol = 0});
 		odur = msg[19];
 		opan = msg[20];
 		odir = msg[21];
 		~organo.set(\vol, ovol, \dur, odur, \pan, opan, \direction, odir);
 
 		// msg 22-25 (4) BlipBlop
-		bvol = msg[22];
+		if(msg[30], {bvol = msg[22]}, {bvol = 0});
 		bperiod = msg[23];
 		bmille = msg[24];
 		bdir = msg[25];
 		~blipblop.set(\vol, bvol, \period, bperiod, \mille, bmille, \direction, bdir);
+
 
 	},
 	"/pos");
 );
 
 
-// MIDI section
+// only MIDI section
 MIDIClient.init;
 MIDIIn.connectAll;
 
@@ -283,5 +285,5 @@ MIDIdef.noteOn(\orgOn, {
 	~organo.set(\t_gate, 1, \freq, nn.midicps);
 }
 );
-)
-~organo.set(\dur, 10)
+);
+//~organo.set(\t_gate, 1);
