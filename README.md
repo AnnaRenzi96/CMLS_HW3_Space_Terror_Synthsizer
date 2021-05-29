@@ -12,9 +12,15 @@ This were some of the vibes that we wanted to recreate with this Project.
 sequencing technique with SuperCollider.
 
 ## Sound synthesis
+- Enviroment
+- Blip Blop
+- Y A W
+- MIDI terror
+- Alarm
+- Reverb
 
-## user interface
-
+## User interface
+![fotografica](https://user-images.githubusercontent.com/74784274/120085360-ce811600-c0d7-11eb-816d-1f54ff9c3432.PNG)
 ## Authors
 Annafelicia Renzi, Riccardo Kubler, Francesco Zumerle
 ### Homework 3 - Computer Music, Languages and Synthesis - Politecnico di Milano
