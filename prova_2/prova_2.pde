@@ -651,19 +651,19 @@ void draw() {
   myMessage.add(dir_knob_org.getValue());  
   // BUTTONS
   myMessage.add(water_flag); 
-  println(water_flag);
+ 
   
    myMessage.add(bb_flag); 
-  println(bb_flag);
+  
    myMessage.add(yaw_flag); 
-  println(yaw_flag);
+  
   
    myMessage.add(tone_flag); 
-  println(tone_flag);
+ 
    myMessage.add(organo_flag); 
-  println(organo_flag);
+  
    myMessage.add(reverb_flag); 
-  println(reverb_flag);
+  
   
   oscP5.send(myMessage,myRemoteLocation);
   
