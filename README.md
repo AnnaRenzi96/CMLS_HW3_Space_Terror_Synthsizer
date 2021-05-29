@@ -1,8 +1,8 @@
 # Space terror synthesizer
-Catchy phrases and brief overview
-eeded
-ededeed
-dd.
+Have you ever been in the outer space? 
+Have you ever felt the anxiety of being alone in an abandoned starship?
+What would you hear if an undefined presence invaded your station? 
+This were some of the vibes that we wanted to recreate with this Project.
 
 Homework 3 - Computer Music, Languages and Synthesis - Politecnico di Milano
 # Initial assignment
