@@ -243,7 +243,7 @@ OSCdef('OSCreciver',
 		tspeed = msg[10];
 		tvol1 = msg[11];
 		tvol2 = msg[12];
-		tvol3 = msg[32];
+		tvol3 = msg[31];
 		~tone.set(\vol, tvol, \freq, tfreq, \speed, tspeed, \vol1, tvol1, \vol2, tvol2, \vol3, tvol3);
 
 		// msg 13-17 (5) Water
